@@ -174,16 +174,16 @@ public class SolUnitRunner extends BlockJUnit4ClassRunner {
      */
     @Override
     protected List<FrameworkMethod> computeTestMethods() {
-    	
+
     	List<FrameworkMethod> methods = getTestClass().getAnnotatedMethods(Test.class);
-    	
+
     	//creates a new List (JUnit default is 'unmodifiable list')
     	List<FrameworkMethod> newList = new ArrayList<>();
     	methods.forEach(newList::add);
-    	
+
     	//Order methods to run "@Safe" first
     	Collections.sort(newList, new SafeMethodSorter());
-    	
+
         return newList;
     }
     
@@ -203,16 +203,16 @@ public class SolUnitRunner extends BlockJUnit4ClassRunner {
 
         Statement statement = methodInvoker(method, test);
         statement = possiblyExpectingExceptions(method, test, statement);
-        
+
         //verify the need to run @Before fixture
         if ( this.needsToRunBeforeFixture(method) ) {
         	statement = withBefores(method, test, statement);
         	//if run once, check it
         	this.firstBeforeExecution = false;
         }
-        
-       
-        
+
+
+
         //mark first non safe execution when happens
         if ( !this.safeParser.isSafe(method) ) {
         	this.firstNonSafeExecuted = true;
