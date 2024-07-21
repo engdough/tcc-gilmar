@@ -199,7 +199,6 @@ public class TestDemocracia {
 	
 	@Test
 	public void busca_a_quinta_proposta_cadastrada() throws Exception  {
-		System.out.println("teste");
 		Proposal p = new Proposal( this.democracy.getProposal( BigInteger.valueOf(PROPOSAL_5) ).send() );
 
 		Assertions.assertNotNull( p );

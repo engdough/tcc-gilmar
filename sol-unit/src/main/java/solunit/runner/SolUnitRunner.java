@@ -32,7 +32,7 @@ import solunit.internal.utilities.Web3jInjector;
 import solunit.parser.SafeParser;
 import solunit.parser.SafeParserFactory;
 
-public class SolUnitRunner implements MethodOrderer, BeforeEachCallback {
+public class SolUnitRunner implements InvocationInterceptor, MethodOrderer {
 	
 	/** Logger instance */
 	protected final Logger log = LoggerFactory.getLogger(getClass());
@@ -223,20 +223,22 @@ public class SolUnitRunner implements MethodOrderer, BeforeEachCallback {
 //    }
 
 	@Override
-	public void beforeEach(ExtensionContext context) throws Exception {
-		Method method = context.getRequiredTestMethod();
-		Object object = context.getRequiredTestInstance();
+	public void interceptBeforeEachMethod(Invocation<Void> invocation, ReflectiveInvocationContext<Method> reflectiveInvocationContext, ExtensionContext extensionContext) throws Throwable {
+		Method method = extensionContext.getRequiredTestMethod();
+		Object object = extensionContext.getRequiredTestInstance();
 
 		injectDependencies(object, method);
 
-		if (!this.needsToRunBeforeFixture(method)) {
-
+		if (this.needsToRunBeforeFixture(method)) {
+			invocation.proceed();
+			this.firstBeforeExecution = false;
+			return;
 		}
-
-		this.firstBeforeExecution = false;
 
 		if (!this.safeParser.isSafe(method)) {
 			this.firstNonSafeExecuted = true;
 		}
+
+		invocation.skip();
 	}
 }
