@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import org.junit.runners.model.FrameworkMethod;
+import org.junit.jupiter.api.MethodDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.web3j.crypto.Credentials;
@@ -60,7 +60,7 @@ public class ContractInjector {
      * @param testObject object that will be execute the test method
      * @param actualMethod object representing the actual test method
      */
-    public void deployOrLoadContract( Field f, Object testObject, FrameworkMethod actualMethod, boolean firstNonSafeExecuted) {
+    public void deployOrLoadContract( Field f, Object testObject, Method actualMethod, boolean firstNonSafeExecuted) {
     	this.firstNonSafeExecuted = firstNonSafeExecuted;
     	f.setAccessible(true);
 		try {
@@ -88,7 +88,7 @@ public class ContractInjector {
      * @param address address for an existing contract (if there is one)
      * @return true if needs a new deploy, false if can reuse a existing contract
      */
-    private boolean needsToDeployNewContract(FrameworkMethod actualMethod, String address ) {
+    private boolean needsToDeployNewContract(Method actualMethod, String address ) {
     	if ( isSafeAndNoDeployHasBeenMade(actualMethod, address) ) {
     		return true;
     	}
@@ -102,11 +102,11 @@ public class ContractInjector {
     	return false;
     }
     
-    private boolean isSafeAndNoDeployHasBeenMade(FrameworkMethod actualMethod, String address) {
+    private boolean isSafeAndNoDeployHasBeenMade(Method actualMethod, String address) {
     	return (this.safeParser.isSafe(actualMethod) && address == null );
     }
     
-    private boolean fistNonSafeWasExecuted(FrameworkMethod actualMethod) {
+    private boolean fistNonSafeWasExecuted(Method actualMethod) {
     	return (!this.safeParser.isSafe(actualMethod) && this.firstNonSafeExecuted );
     }
     

@@ -1,12 +1,12 @@
 package experiments.tests.simple;
 
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import experiments.contracts.Democracy;
 import solunit.annotations.Contract;
 import solunit.runner.SolUnitRunner;
 
-@RunWith(SolUnitRunner.class)
+@ExtendWith(SolUnitRunner.class)
 public class TestDemocracy {
 	
 	@Contract

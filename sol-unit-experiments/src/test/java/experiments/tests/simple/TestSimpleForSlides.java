@@ -3,9 +3,9 @@ package experiments.tests.simple;
 import java.math.BigInteger;
 import java.util.Date;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
@@ -21,7 +21,7 @@ public class TestSimpleForSlides {
 	
 	Democracy democracy;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		web3j = Web3j.build(new HttpService("http://localhost:7545"));
 		credentials = Credentials.create("1234");
@@ -39,8 +39,8 @@ public class TestSimpleForSlides {
 	@Test
 	public void verify_registered_proposal() throws Exception {
 		Proposal p = new Proposal( this.democracy.getProposal(BigInteger.ONE).send() );
-		Assert.assertNotNull( p );
-		Assert.assertEquals("Title", p.getTitle());
+		Assertions.assertNotNull( p );
+		Assertions.assertEquals("Title", p.getTitle());
 	}
 
 }

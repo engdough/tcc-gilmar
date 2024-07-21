@@ -3,10 +3,10 @@ package experiments.tests.approach;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.web3j.tuples.generated.Tuple2;
 
 import experiments.contracts.SimpleAgenda;
@@ -20,13 +20,13 @@ import solunit.runner.SolUnitRunner;
  *
  */
 
-@RunWith(SolUnitRunner.class)
+@ExtendWith(SolUnitRunner.class)
 public class TestSimpleAgendaApproach {
 
 	@Contract
 	SimpleAgenda agenda;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.agenda.newContact("Teste", stringToByteArray("1234") , "teste@gmail.com").send();
 		this.agenda.newContact("Teste 2", stringToByteArray("5678") , "teste@gmail.com").send();
@@ -45,20 +45,20 @@ public class TestSimpleAgendaApproach {
 	@Test
 	public void possible_to_count_the_contacts() throws Exception{
 		BigInteger total = this.agenda.countContacts().send();
-		Assert.assertEquals( 2, total.intValue() );
+		Assertions.assertEquals( 2, total.intValue() );
 	}
 	
 	@Test
 	public void possible_to_get_a_number_by_his_index() throws Exception{
 		byte[] result = this.agenda.getNumberAtIndex( new BigInteger("1") ).send();
-		Assert.assertNotNull(result);
+		Assertions.assertNotNull(result);
 	}
 	
 	@Test
 	public void possible_to_get_a_contact_by_his_number() throws Exception{
 		Tuple2<String, String> result = this.agenda.getContact( stringToByteArray("1234") ).send();
-		Assert.assertNotNull(result);
-		Assert.assertEquals("Teste", result.getValue1());
+		Assertions.assertNotNull(result);
+		Assertions.assertEquals("Teste", result.getValue1());
 	}
 	
 	

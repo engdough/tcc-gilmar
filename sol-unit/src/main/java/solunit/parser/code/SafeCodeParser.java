@@ -1,8 +1,9 @@
 package solunit.parser.code;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 
-import org.junit.runners.model.FrameworkMethod;
+import org.junit.jupiter.api.MethodDescriptor;
 
 import solunit.constants.Config;
 import solunit.internal.utilities.PropertiesReader;
@@ -24,7 +25,7 @@ public class SafeCodeParser implements SafeParser {
 
 
 	@Override
-	public boolean isSafe(FrameworkMethod actualMethod) {
+	public boolean isSafe(Method actualMethod) {
 		return this.javaParser.isSafe(actualMethod);
 	}
 

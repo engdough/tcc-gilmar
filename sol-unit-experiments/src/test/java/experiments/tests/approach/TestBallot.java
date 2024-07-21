@@ -7,10 +7,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.tx.gas.DefaultGasProvider;
@@ -28,7 +28,7 @@ import solunit.runner.SolUnitRunner;
  * @author hallan
  *
  */
-@RunWith(SolUnitRunner.class)
+@ExtendWith(SolUnitRunner.class)
 public class TestBallot {
 	
 	@Contract
@@ -54,7 +54,7 @@ public class TestBallot {
 	
 	
 	
-	@Before
+	@BeforeEach
 	public  void setUp() throws Exception {
 		List<byte[]> lista = new ArrayList<>();
 		lista.add(this.stringToByteArray("test"));
@@ -67,13 +67,13 @@ public class TestBallot {
 	@Test
 	public void should_initialize_the_owner_as_the_chairperson() throws Exception {
 		String person = this.ballot.getChairPerson().send();
-		Assert.assertEquals(this.mainAccount.getAddress(), person);
+		Assertions.assertEquals(this.mainAccount.getAddress(), person);
 	}
 	
 	@Test
 	public void should_be_initialized_with_two_proposals_using_the_init() throws Exception {
 		BigInteger count = this.ballot.getProposalsCount().send();
-		Assert.assertEquals(2, count.intValue());
+		Assertions.assertEquals(2, count.intValue());
 	}
 	
 	@Test
@@ -81,7 +81,7 @@ public class TestBallot {
 		this.ballot.createProposal( this.stringToByteArray("test 3") ).send();
 		
 		BigInteger count = this.ballot.getProposalsCount().send();
-		Assert.assertEquals(3, count.intValue());
+		Assertions.assertEquals(3, count.intValue());
 	}
 	
 	@Test
@@ -89,10 +89,10 @@ public class TestBallot {
 		this.ballot.giveRightToVote( this.account1.getAddress() ).send();
 		
 		BigInteger allowed = this.ballot.getVoterWeight( this.account1.getAddress() ).send();
-		Assert.assertEquals(1, allowed.intValue());
+		Assertions.assertEquals(1, allowed.intValue());
 		
 		BigInteger notAllowed = this.ballot.getVoterWeight( this.account2.getAddress() ).send();
-		Assert.assertEquals(0, notAllowed.intValue());
+		Assertions.assertEquals(0, notAllowed.intValue());
 	}
 	
 	@Test
@@ -105,27 +105,29 @@ public class TestBallot {
 		b1.delegate( this.account3.getAddress() ).send();
 		
 		BigInteger allowed = this.ballot.getVoterWeight( this.account3.getAddress() ).send();
-		Assert.assertEquals(2, allowed.intValue());
+		Assertions.assertEquals(2, allowed.intValue());
 		
 //		BigInteger notAllowed = this.ballot.getVoterWeight( this.account4.getAddress() ).send();
 //		Assert.assertEquals(0, notAllowed.intValue());
 	}
 	
-	@Test(expected=RuntimeException.class)
+	@Test
 	public void should_not_allow_a_voter_to_delegate_to_themselves() throws Exception {
 		this.ballot.giveRightToVote( this.mainAccount.getAddress() ).send();
+
+		Assertions.assertThrows(RuntimeException.class, () -> {throw new RuntimeException("Erro esperado");});
 	}
 
 	@Test
 	public void should_be_able_view_proposal_votes() throws Exception {
 		BigInteger votes = this.ballot.getProposalVoteCount(new BigInteger("1")).send();
-		Assert.assertEquals(1, votes.intValue());
+		Assertions.assertEquals(1, votes.intValue());
 	}
 	
 	@Test
 	public void should_be_able_view_winning_proposal() throws Exception {
 		BigInteger index = this.ballot.winningProposal().send();
-		Assert.assertEquals(1, index.intValue());
+		Assertions.assertEquals(1, index.intValue());
 	}
 
 	private byte []  stringToByteArray( String number ) throws UnsupportedEncodingException {

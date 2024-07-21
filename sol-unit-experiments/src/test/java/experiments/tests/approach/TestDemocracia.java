@@ -3,10 +3,11 @@ package experiments.tests.approach;
 import java.math.BigInteger;
 import java.util.Date;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 
@@ -15,10 +16,10 @@ import experiments.democracy.entity.Proposal;
 import experiments.democracy.factory.TestDemocracyFactory;
 import solunit.annotations.Account;
 import solunit.annotations.Contract;
-import solunit.annotations.Print;
 import solunit.runner.SolUnitRunner;
 
-@RunWith(SolUnitRunner.class)
+@ExtendWith(SolUnitRunner.class)
+@TestMethodOrder(SolUnitRunner.class)
 public class TestDemocracia {
 
 	@Contract
@@ -50,7 +51,7 @@ public class TestDemocracia {
 	private static final int PROPOSAL_4 = 3;
 	private static final int PROPOSAL_5 = 4;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		
 		//seta o contrato da conta principal
@@ -65,7 +66,7 @@ public class TestDemocracia {
 														"Description of proposal number  " + i, 
 														new Date(), 
 														(100 * i) );
-			Assert.assertNotNull( receipt );
+			Assertions.assertNotNull( receipt );
 		}
 		
 		TestDemocracyFactory.createVote(PROPOSAL_3, VOTE_FAVOR);
@@ -96,127 +97,118 @@ public class TestDemocracia {
 
 
 	@Test
-	@Print(print = "PRIMEIRO")
 	public void verifica_se_o_total_de_propostas_esta_correto() throws Exception  {
 		BigInteger total = this.democracy.getProposalsLength().send();
-		Assert.assertEquals(TOTAL_PROPOSALS, total.intValue() );
+		Assertions.assertEquals(TOTAL_PROPOSALS, total.intValue());
 	}
 	
 	@Test
-	@Print(print = "SEGUNDO")
 	public void busca_a_primeira_proposta_cadastrada() throws Exception  {
 		Proposal p = new Proposal( this.democracy.getProposal( BigInteger.valueOf(PROPOSAL_1) ).send() );
 
-		Assert.assertNotNull( p );
-		Assert.assertEquals("Proposal 1", p.getTitle() );
-		Assert.assertEquals("Description of proposal number  1", p.getDescription() );
-		Assert.assertEquals(mainAccount.getAddress().toLowerCase(), p.getCreator() );
-		Assert.assertEquals(100l, p.getNeededVotes() );
-		Assert.assertEquals(0l, p.getTotalVotesFavor() );
-		Assert.assertEquals(0l, p.getTotalVotesAgainst());
-		Assert.assertEquals(1, p.getStatus() );
+		Assertions.assertNotNull( p );
+		Assertions.assertEquals("Proposal 1", p.getTitle() );
+		Assertions.assertEquals("Description of proposal number  1", p.getDescription() );
+		Assertions.assertEquals(mainAccount.getAddress().toLowerCase(), p.getCreator() );
+		Assertions.assertEquals(100l, p.getNeededVotes() );
+		Assertions.assertEquals(0l, p.getTotalVotesFavor() );
+		Assertions.assertEquals(0l, p.getTotalVotesAgainst());
+		Assertions.assertEquals(1, p.getStatus() );
 	}
 	
 	@Test
-	@Print(print = "TERCEIRO")
 	public void busca_a_segunda_proposta_cadastrada() throws Exception  {
 		Proposal p = new Proposal( this.democracy.getProposal( BigInteger.valueOf(PROPOSAL_2) ).send() );
 
-		Assert.assertNotNull( p );
-		Assert.assertEquals("Proposal 2", p.getTitle() );
-		Assert.assertEquals("Description of proposal number  2", p.getDescription() );
-		Assert.assertEquals(mainAccount.getAddress().toLowerCase(), p.getCreator() );
-		Assert.assertEquals(200l, p.getNeededVotes() );
-		Assert.assertEquals(1l, p.getTotalVotesFavor() );
-		Assert.assertEquals(2l, p.getTotalVotesAgainst());
-		Assert.assertEquals(1, p.getStatus() );
+		Assertions.assertNotNull( p );
+		Assertions.assertEquals("Proposal 2", p.getTitle() );
+		Assertions.assertEquals("Description of proposal number  2", p.getDescription() );
+		Assertions.assertEquals(mainAccount.getAddress().toLowerCase(), p.getCreator() );
+		Assertions.assertEquals(200l, p.getNeededVotes() );
+		Assertions.assertEquals(1l, p.getTotalVotesFavor() );
+		Assertions.assertEquals(2l, p.getTotalVotesAgainst());
+		Assertions.assertEquals(1, p.getStatus() );
 	}
 	
 	@Test
-	@Print(print = "QUARTO")
 	public void busca_a_terceira_proposta_cadastrada() throws Exception  {
 		Proposal p = new Proposal( this.democracy.getProposal( BigInteger.valueOf(PROPOSAL_3) ).send() );
 
-		Assert.assertNotNull( p );
-		Assert.assertEquals("Proposal 3", p.getTitle() );
-		Assert.assertEquals("Description of proposal number  3", p.getDescription() );
-		Assert.assertEquals(mainAccount.getAddress().toLowerCase(), p.getCreator() );
-		Assert.assertEquals(300l, p.getNeededVotes() );
-		Assert.assertEquals(1l, p.getTotalVotesFavor() );
-		Assert.assertEquals(1l, p.getTotalVotesAgainst());
+		Assertions.assertNotNull( p );
+		Assertions.assertEquals("Proposal 3", p.getTitle() );
+		Assertions.assertEquals("Description of proposal number  3", p.getDescription() );
+		Assertions.assertEquals(mainAccount.getAddress().toLowerCase(), p.getCreator() );
+		Assertions.assertEquals(300l, p.getNeededVotes() );
+		Assertions.assertEquals(1l, p.getTotalVotesFavor() );
+		Assertions.assertEquals(1l, p.getTotalVotesAgainst());
 
-		Assert.assertEquals(1, p.getStatus() );
+		Assertions.assertEquals(1, p.getStatus() );
 	}
 	
 	@Test
-	@Print(print = "QUINTO")
 	public void efetua_um_voto_na_primeira_proposta() throws Exception  {
 		Proposal p = new Proposal( this.democracy.getProposal( BigInteger.valueOf(PROPOSAL_1) ).send() );
-		Assert.assertNotNull( p );
+		Assertions.assertNotNull( p );
 
 		this.democracy.voteOnProposal(p.getIndex(), VOTE_FAVOR);
 	}
 	
 	@Test
-	@Print(print = "SEXTO")
 	public void efetua_dois_votos_com_a_mesma_carteira_na_primeira_proposta() throws Exception  {
 		Proposal p = new Proposal( this.democracy.getProposal( BigInteger.valueOf(PROPOSAL_1) ).send() );
-		Assert.assertNotNull( p );
+		Assertions.assertNotNull( p );
 
 		this.democracy.voteOnProposal(p.getIndex(), VOTE_FAVOR).send();
 		this.democracy.voteOnProposal(p.getIndex(), VOTE_AGAINST).send();
 
 		Proposal fim = new Proposal( this.democracy.getProposal( BigInteger.valueOf(PROPOSAL_1) ).send() );
-		Assert.assertEquals(fim.getTotalVotesAgainst(), 1);
-		Assert.assertEquals(fim.getTotalVotesFavor(), 1);
+		Assertions.assertEquals(fim.getTotalVotesAgainst(), 1);
+		Assertions.assertEquals(fim.getTotalVotesFavor(), 1);
 	}
 	
 	@Test
-	@Print(print = "SETIMO")
 	public void efetua_dois_votos_com_a_mesma_carteira_em_propostas_diferentes() throws Exception  {
 		Proposal p = new Proposal( this.democracy.getProposal( BigInteger.valueOf(PROPOSAL_1) ).send() );
-		Assert.assertNotNull( p );
+		Assertions.assertNotNull( p );
 
 		this.democracy.voteOnProposal(p.getIndex(), VOTE_FAVOR).send();
 
 		Democracy d = TestDemocracyFactory.loadFromAddress(this.account1);
-		Assert.assertNotNull( d );
+		Assertions.assertNotNull( d );
 
 		d.voteOnProposal(p.getIndex(), VOTE_AGAINST).send();
 
 		Proposal fim = new Proposal( this.democracy.getProposal( BigInteger.valueOf(PROPOSAL_1) ).send() );
-		Assert.assertEquals(fim.getTotalVotesAgainst(), 1);
-		Assert.assertEquals(fim.getTotalVotesFavor(), 1);
+		Assertions.assertEquals(fim.getTotalVotesAgainst(), 1);
+		Assertions.assertEquals(fim.getTotalVotesFavor(), 1);
 	}
 	
 	@Test
-	@Print(print = "OITAVO")
 	public void busca_a_quarta_proposta_cadastrada() throws Exception  {
 		Proposal p = new Proposal( this.democracy.getProposal( BigInteger.valueOf(PROPOSAL_4) ).send() );
 
-		Assert.assertNotNull( p );
-		Assert.assertEquals("Proposal 4", p.getTitle() );
-		Assert.assertEquals("Description of proposal number  4", p.getDescription() );
-		Assert.assertEquals(mainAccount.getAddress().toLowerCase(), p.getCreator() );
-		Assert.assertEquals(400l, p.getNeededVotes() );
-		Assert.assertEquals(4l, p.getTotalVotesFavor() );
-		Assert.assertEquals(1l, p.getTotalVotesAgainst());
-		Assert.assertEquals(1, p.getStatus() );
+		Assertions.assertNotNull( p );
+		Assertions.assertEquals("Proposal 4", p.getTitle() );
+		Assertions.assertEquals("Description of proposal number  4", p.getDescription() );
+		Assertions.assertEquals(mainAccount.getAddress().toLowerCase(), p.getCreator() );
+		Assertions.assertEquals(400l, p.getNeededVotes() );
+		Assertions.assertEquals(4l, p.getTotalVotesFavor() );
+		Assertions.assertEquals(1l, p.getTotalVotesAgainst());
+		Assertions.assertEquals(1, p.getStatus() );
 	}
 	
 	@Test
-	//@Print(print = "NONO")
 	public void busca_a_quinta_proposta_cadastrada() throws Exception  {
 		System.out.println("teste");
 		Proposal p = new Proposal( this.democracy.getProposal( BigInteger.valueOf(PROPOSAL_5) ).send() );
 
-		Assert.assertNotNull( p );
-		Assert.assertEquals("Proposal 5", p.getTitle() );
-		Assert.assertEquals("Description of proposal number  5", p.getDescription() );
-		Assert.assertEquals(mainAccount.getAddress().toLowerCase(), p.getCreator() );
-		Assert.assertEquals(500l, p.getNeededVotes() );
-		Assert.assertEquals(1l, p.getTotalVotesFavor() );
-		Assert.assertEquals(4l, p.getTotalVotesAgainst());
-		Assert.assertEquals(1, p.getStatus() );
+		Assertions.assertNotNull( p );
+		Assertions.assertEquals("Proposal 5", p.getTitle() );
+		Assertions.assertEquals("Description of proposal number  5", p.getDescription() );
+		Assertions.assertEquals(mainAccount.getAddress().toLowerCase(), p.getCreator() );
+		Assertions.assertEquals(500l, p.getNeededVotes() );
+		Assertions.assertEquals(1l, p.getTotalVotesFavor() );
+		Assertions.assertEquals(4l, p.getTotalVotesAgainst());
+		Assertions.assertEquals(1, p.getStatus() );
 	}
 }

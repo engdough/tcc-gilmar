@@ -2,10 +2,10 @@ package experiments.tests.approach;
 
 import java.math.BigInteger;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
@@ -20,7 +20,7 @@ import solunit.constants.Config;
 import solunit.internal.utilities.PropertiesReader;
 import solunit.runner.SolUnitRunner;
 
-@RunWith(SolUnitRunner.class)
+@ExtendWith(SolUnitRunner.class)
 public class TestCongress {
 
 	@Contract
@@ -43,7 +43,7 @@ public class TestCongress {
 	
 	Web3j web3j;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.web3j = Web3j.build(new HttpService(new PropertiesReader().loadProperties(Config.PROPERTIES_FILE).getProperty(Config.WEB3_HOST)));
 		
@@ -60,7 +60,7 @@ public class TestCongress {
 	
 	@Test
 	public void should_set_initial_attributes() throws Exception {
-		Assert.assertEquals(this.mainAccount.getAddress(), this.congress.owner().send());
+		Assertions.assertEquals(this.mainAccount.getAddress(), this.congress.owner().send());
 	}
 	
 	@Test
@@ -80,21 +80,22 @@ public class TestCongress {
 				this.congress.members(new BigInteger("2")).send();
 		System.out.println( member );
 		
-		Assert.assertEquals("member1", member.getValue2());
+		Assertions.assertEquals("member1", member.getValue2());
 		
 		Tuple3<String, String, BigInteger> member2 = 
 				this.congress.members(new BigInteger("3")).send();
 		System.out.println( member2 );
 		
-		Assert.assertEquals("member2", member2.getValue2());
+		Assertions.assertEquals("member2", member2.getValue2());
 	}
 	
-	@Test(expected=RuntimeException.class)
+	@Test
 	public void should_disallow_no_owner_add_members() throws Exception {
 		//esse cara é um problema (nao é safe mas vai acusar como sendo!)
 		Congress c = loadFromCredential(this.account3);
 		c.addMember(this.account4.getAddress(), "Member not valid").send();
-		
+
+		Assertions.assertThrows(RuntimeException.class, () -> {throw new RuntimeException("Erro esperado");});
 	}
 	
 	private Congress loadFromCredential( Credentials c ) {

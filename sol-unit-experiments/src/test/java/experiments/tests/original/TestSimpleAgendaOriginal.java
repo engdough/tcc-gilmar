@@ -3,9 +3,9 @@ package experiments.tests.original;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.web3j.tuples.generated.Tuple2;
 
 import experiments.contracts.SimpleAgenda;
@@ -19,7 +19,7 @@ import solunit.runner.SolUnitRunner;
  *
  */
 
-@RunWith(SolUnitRunner.class)
+@ExtendWith(SolUnitRunner.class)
 public class TestSimpleAgendaOriginal {
 
 	@Contract
@@ -41,7 +41,7 @@ public class TestSimpleAgendaOriginal {
 		this.agenda.newContact("Teste", stringToByteArray("1234") , "teste@gmail.com").send();
 		this.agenda.newContact("Teste 2", stringToByteArray("5678") , "teste@gmail.com").send();
 		
-		Assert.assertEquals( 2, this.agenda.countContacts().send().intValue());
+		Assertions.assertEquals( 2, this.agenda.countContacts().send().intValue());
 	}
 	
 	@Test
@@ -50,7 +50,7 @@ public class TestSimpleAgendaOriginal {
 		this.agenda.newContact("Teste 2", stringToByteArray("5678") , "teste@gmail.com").send();
 		
 		byte[] result = this.agenda.getNumberAtIndex( new BigInteger("1") ).send();
-		Assert.assertNotNull(result);
+		Assertions.assertNotNull(result);
 	}
 	
 	@Test
@@ -59,8 +59,8 @@ public class TestSimpleAgendaOriginal {
 		this.agenda.newContact("Teste 2", stringToByteArray("5678") , "teste@gmail.com").send();
 		
 		Tuple2<String, String> result = this.agenda.getContact( stringToByteArray("1234") ).send();
-		Assert.assertNotNull(result);
-		Assert.assertEquals("Teste", result.getValue1());
+		Assertions.assertNotNull(result);
+		Assertions.assertEquals("Teste", result.getValue1());
 	}
 	
 	

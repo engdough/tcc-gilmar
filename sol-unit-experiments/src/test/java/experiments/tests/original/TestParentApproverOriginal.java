@@ -3,10 +3,10 @@ package experiments.tests.original;
 import java.math.BigInteger;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.RemoteCall;
@@ -28,7 +28,7 @@ import solunit.runner.SolUnitRunner;
  * @author hallan
  *
  */
-@RunWith(SolUnitRunner.class)
+@ExtendWith(SolUnitRunner.class)
 public class TestParentApproverOriginal {
 	
 	@Contract
@@ -45,7 +45,7 @@ public class TestParentApproverOriginal {
 	
 	Web3j web3j;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.web3j = Web3j.build(new HttpService(new PropertiesReader().loadProperties(Config.PROPERTIES_FILE).getProperty(Config.WEB3_HOST)));
 		
@@ -82,14 +82,14 @@ public class TestParentApproverOriginal {
 				this.pa.getTransactionDetail( new BigInteger("1") ).send();
 		
 		System.out.println( ta );
-		Assert.assertEquals(this.account3.getAddress(), ta.getValue1());
+		Assertions.assertEquals(this.account3.getAddress(), ta.getValue1());
 	}
 	
 	@Test
 	public void parent_can_get_list_of_transactions_to_approve() throws Exception {
 		List<RemoteCall> list = this.pa.getTransactionsToApprove().send();
 		System.out.println( list );
-		Assert.assertEquals(2, list.size());
+		Assertions.assertEquals(2, list.size());
 	}
 	
 	@Test
@@ -100,11 +100,11 @@ public class TestParentApproverOriginal {
 	
 	@Test
 	public void should_be_able_to_view_parent_address() throws Exception {
-		Assert.assertEquals( this.accountParent.getAddress() , this.pa.getParent().send());
+		Assertions.assertEquals( this.accountParent.getAddress() , this.pa.getParent().send());
 	}
 	
 	@Test
 	public void should_be_able_to_view_child_address() throws Exception {
-		Assert.assertEquals( this.accountChild.getAddress() , this.pa.getChild().send());
+		Assertions.assertEquals( this.accountChild.getAddress() , this.pa.getChild().send());
 	}
 }

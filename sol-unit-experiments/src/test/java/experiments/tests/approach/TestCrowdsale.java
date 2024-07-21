@@ -2,9 +2,9 @@ package experiments.tests.approach;
 
 import java.math.BigInteger;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.web3j.crypto.Credentials;
 import org.web3j.utils.Convert;
 
@@ -14,7 +14,7 @@ import solunit.annotations.Account;
 import solunit.annotations.Contract;
 import solunit.runner.SolUnitRunner;
 
-@RunWith(SolUnitRunner.class)
+@ExtendWith(SolUnitRunner.class)
 public class TestCrowdsale {
 	
 	@Contract
@@ -35,7 +35,7 @@ public class TestCrowdsale {
 	@Account(id="4")
 	Credentials accountDestino;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.crowdsale.init(this.accountDestino.getAddress(), 
 							new BigInteger("100"), //goal

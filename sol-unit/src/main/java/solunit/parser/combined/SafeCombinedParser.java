@@ -1,8 +1,9 @@
 package solunit.parser.combined;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 
-import org.junit.runners.model.FrameworkMethod;
+import org.junit.jupiter.api.MethodDescriptor;
 
 import solunit.annotations.Safe;
 import solunit.constants.Config;
@@ -25,7 +26,7 @@ public class SafeCombinedParser implements SafeParser {
 
 
 	@Override
-	public boolean isSafe(FrameworkMethod actualMethod) {
+	public boolean isSafe(Method actualMethod) {
 		Safe safe = actualMethod.getAnnotation(Safe.class);
     	return (safe != null) || this.javaParser.isSafe(actualMethod);
 	}
