@@ -15,7 +15,6 @@ import experiments.democracy.entity.Proposal;
 import experiments.democracy.factory.TestDemocracyFactory;
 import solunit.annotations.Account;
 import solunit.annotations.Contract;
-import solunit.annotations.Print;
 import solunit.runner.SolUnitRunner;
 
 @RunWith(SolUnitRunner.class)
@@ -58,7 +57,7 @@ public class TestDemocracia {
 		
 		//cria 5 propostas
 		int total = TOTAL_PROPOSALS;
-		
+
 		for ( int i = 1; i <= total; i++ ) {
 			TransactionReceipt receipt =
 					TestDemocracyFactory.createProposal("Proposal " + i, 
@@ -73,7 +72,7 @@ public class TestDemocracia {
 		
 		TestDemocracyFactory.createVote(this.account2, PROPOSAL_2, VOTE_AGAINST);
 		TestDemocracyFactory.createVote(this.account2, PROPOSAL_3, VOTE_AGAINST);
-		
+
 		TestDemocracyFactory.createVote(this.account3, PROPOSAL_2, VOTE_FAVOR);
 		
 		TestDemocracyFactory.createVote(PROPOSAL_4, VOTE_FAVOR);
@@ -96,15 +95,15 @@ public class TestDemocracia {
 
 
 	@Test
-	@Print(print = "PRIMEIRO")
 	public void verifica_se_o_total_de_propostas_esta_correto() throws Exception  {
+		Thread.sleep(1000);
 		BigInteger total = this.democracy.getProposalsLength().send();
 		Assert.assertEquals(TOTAL_PROPOSALS, total.intValue() );
 	}
 	
 	@Test
-	@Print(print = "SEGUNDO")
 	public void busca_a_primeira_proposta_cadastrada() throws Exception  {
+		Thread.sleep(2000);
 		Proposal p = new Proposal( this.democracy.getProposal( BigInteger.valueOf(PROPOSAL_1) ).send() );
 
 		Assert.assertNotNull( p );
@@ -118,8 +117,8 @@ public class TestDemocracia {
 	}
 	
 	@Test
-	@Print(print = "TERCEIRO")
 	public void busca_a_segunda_proposta_cadastrada() throws Exception  {
+		Thread.sleep(3000);
 		Proposal p = new Proposal( this.democracy.getProposal( BigInteger.valueOf(PROPOSAL_2) ).send() );
 
 		Assert.assertNotNull( p );
@@ -133,9 +132,9 @@ public class TestDemocracia {
 	}
 	
 	@Test
-	@Print(print = "QUARTO")
 	public void busca_a_terceira_proposta_cadastrada() throws Exception  {
-		Proposal p = new Proposal( this.democracy.getProposal( BigInteger.valueOf(PROPOSAL_3) ).send() );
+		Thread.sleep(4000);
+		Proposal p = new Proposal( this.democracy.getProposal( BigInteger.valueOf(PROPOSAL_4) ).send() );
 
 		Assert.assertNotNull( p );
 		Assert.assertEquals("Proposal 3", p.getTitle() );
@@ -149,8 +148,8 @@ public class TestDemocracia {
 	}
 	
 	@Test
-	@Print(print = "QUINTO")
 	public void efetua_um_voto_na_primeira_proposta() throws Exception  {
+		Thread.sleep(5000);
 		Proposal p = new Proposal( this.democracy.getProposal( BigInteger.valueOf(PROPOSAL_1) ).send() );
 		Assert.assertNotNull( p );
 
@@ -158,8 +157,8 @@ public class TestDemocracia {
 	}
 	
 	@Test
-	@Print(print = "SEXTO")
 	public void efetua_dois_votos_com_a_mesma_carteira_na_primeira_proposta() throws Exception  {
+		Thread.sleep(6000);
 		Proposal p = new Proposal( this.democracy.getProposal( BigInteger.valueOf(PROPOSAL_1) ).send() );
 		Assert.assertNotNull( p );
 
@@ -172,8 +171,8 @@ public class TestDemocracia {
 	}
 	
 	@Test
-	@Print(print = "SETIMO")
 	public void efetua_dois_votos_com_a_mesma_carteira_em_propostas_diferentes() throws Exception  {
+		Thread.sleep(7000);
 		Proposal p = new Proposal( this.democracy.getProposal( BigInteger.valueOf(PROPOSAL_1) ).send() );
 		Assert.assertNotNull( p );
 
@@ -190,8 +189,8 @@ public class TestDemocracia {
 	}
 	
 	@Test
-	@Print(print = "OITAVO")
 	public void busca_a_quarta_proposta_cadastrada() throws Exception  {
+		Thread.sleep(8000);
 		Proposal p = new Proposal( this.democracy.getProposal( BigInteger.valueOf(PROPOSAL_4) ).send() );
 
 		Assert.assertNotNull( p );
@@ -205,9 +204,8 @@ public class TestDemocracia {
 	}
 	
 	@Test
-	//@Print(print = "NONO")
 	public void busca_a_quinta_proposta_cadastrada() throws Exception  {
-		System.out.println("teste");
+		Thread.sleep(9000);
 		Proposal p = new Proposal( this.democracy.getProposal( BigInteger.valueOf(PROPOSAL_5) ).send() );
 
 		Assert.assertNotNull( p );

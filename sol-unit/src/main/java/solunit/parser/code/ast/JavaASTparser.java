@@ -20,19 +20,20 @@ public class JavaASTparser {
 	protected final Logger log = LoggerFactory.getLogger(getClass());
 
 	String sourceRootDir;
+	String mainSourcDir;
 	SourceRoot sourceRoot;
-	
-	List<ClassOrInterfaceDeclaration> contractClasses;
+
+	List<ClassOrInterfaceDeclaration> projectClasses;
 	List<ClassOrInterfaceDeclaration> testClasses;
-	
-	List<MethodDeclaration> contractSafeMethods;
+	List<MethodDeclaration> projectNotSafeMethods;
 	List<MethodDeclaration> testSafeMethods;
 
-	public JavaASTparser( String sourceDir ) {
+	public JavaASTparser( String sourceDir, String mainSourceDir ) {
 		this.sourceRootDir = sourceDir;
+		this.mainSourcDir = mainSourceDir;
 		this.testClasses = new ArrayList<>();
-		this.contractClasses = new ArrayList<>();
-		this.contractSafeMethods = new ArrayList<>();
+		this.projectClasses = new ArrayList<>();
+		this.projectNotSafeMethods = new ArrayList<>();
 		this.testSafeMethods = new ArrayList<>();
 		
 		this.init();
@@ -58,10 +59,10 @@ public class JavaASTparser {
 		log.info( "Initializing" );
 		
 		//find all contracts
-		this.findContractClasses();
+		this.findProjectClasses();
 		
 		//finds all safe methods on contracts
-		this.findContractSafeMethods();
+		this.findProjectNotSafeMethods();
 		
 		this.printContractResults();
 		
@@ -74,19 +75,19 @@ public class JavaASTparser {
 		this.printTestClassResults();
 	}
 	
-	private void findContractClasses() {
+	private void findProjectClasses() {
 		new DirExplorer((level, path, file) -> path.endsWith(".java"), (level, path, file) -> {
             try {
-            	new ContractClassFinder(this.contractClasses).visit(JavaParser.parse(file), null);
+            	new ProjectClassFinder(this.projectClasses).visit(JavaParser.parse(file), null);
             } catch (IOException e) {
                 new RuntimeException(e);
             }
-		}).explore( new File(this.sourceRootDir) );
+		}).explore( new File(this.mainSourcDir) );
 	}
 	
-	private void findContractSafeMethods() {
-		this.contractClasses.stream().forEach( n -> {
-			new ContractSafeMethodFinder( this.contractSafeMethods ).visit(n, null);
+	private void findProjectNotSafeMethods() {
+		this.projectClasses.stream().forEach( n -> {
+			new ProjectNotSafeMethodFinder( this.projectNotSafeMethods ).visit(n, null);
 		});
 	}
 	
@@ -102,8 +103,8 @@ public class JavaASTparser {
 	
 	private void findTestClassesSafeMethods() {
 		TestRunnerSafeMethodFinder finder = new TestRunnerSafeMethodFinder( this.testSafeMethods );
-		finder.setContractClasses(this.contractClasses);
-		finder.setContractSafeMethods(this.contractSafeMethods);
+		finder.setContractClasses(this.projectClasses);
+		finder.setContractSafeMethods(this.projectNotSafeMethods);
 		
 		this.testClasses.stream().forEach( n -> {
 			finder.visit(n, null);
@@ -111,7 +112,7 @@ public class JavaASTparser {
 	}
 	
 	private void printContractResults() {
-		this.contractSafeMethods.stream().forEach( m -> log.info( String.format("View function found: [%s].[%s]", 
+		this.projectNotSafeMethods.stream().forEach( m -> log.info( String.format("Method not safe found: [%s].[%s]",
 																			this.getClassFromContractMethodAsString(m),
 																			m.getName()) ) );
 	}
@@ -123,7 +124,7 @@ public class JavaASTparser {
 	}
 	
 	private String getClassFromContractMethodAsString( MethodDeclaration m ) {
-		for ( ClassOrInterfaceDeclaration n: this.contractClasses ) {
+		for ( ClassOrInterfaceDeclaration n: this.projectClasses ) {
 			if ( n.getMethods().contains(m) ) {
 				return n.getNameAsString();
 			}

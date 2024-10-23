@@ -89,13 +89,19 @@ class FieldAccessFinder extends VoidVisitorAdapter<Void> {
         super.visit(field, arg);
         
         String fieldAccessName = field.getNameAsString();
+		safe = true;
         
         //search for a field call that is a contract
         field.findCompilationUnit().get().findAll(FieldDeclaration.class)
         	.stream().forEach( a -> {
-	    		if ( a.isAnnotationPresent(Contract.class)  ) {
+	    		if ( a.isStatic() ) {
 	    			String fieldName = a.getVariable(0).getNameAsString();
-	    			contractAccess = fieldName.equals(fieldAccessName);
+					String testBody = md.getBody().toString();
+					this.contractSafeMethods.stream().forEach(b -> {
+						if (testBody.contains(fieldName + " =") || testBody.contains(fieldName + "." + b.getNameAsString())) {
+							safe = false;
+						};
+					});
 	    		}
 	    	});
         
@@ -105,7 +111,7 @@ class FieldAccessFinder extends VoidVisitorAdapter<Void> {
         	md.findAll(MethodCallExpr.class).stream().forEach( a -> {
         		if( a.getScope().isPresent() && a.getScope().get().containsWithin(field) ) {
         			if ( !a.getName().asString().equals("send") ) {
-        				boolean found = 
+        				boolean found =
     						this.contractSafeMethods
         						.stream()
         						.filter( s -> s.getNameAsString().equals( a.getName().asString() ) )

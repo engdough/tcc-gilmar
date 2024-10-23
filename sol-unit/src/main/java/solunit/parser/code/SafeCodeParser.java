@@ -16,7 +16,8 @@ public class SafeCodeParser implements SafeParser {
 	public SafeCodeParser() {
 		try {
 			String testSourceDir = new PropertiesReader().loadProperties(Config.PROPERTIES_FILE).getProperty("test.src.dir");
-			this.javaParser = new JavaASTparser( testSourceDir );
+			String mainSourceDir = new PropertiesReader().loadProperties(Config.PROPERTIES_FILE).getProperty("main.src.dir");
+			this.javaParser = new JavaASTparser( testSourceDir, mainSourceDir );
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
