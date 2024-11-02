@@ -1,19 +1,21 @@
 package ajusteSalarial.service;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import ajusteSalarial.modelo.Funcionario;
 import solunit.runner.SolUnitRunner;
 
-@RunWith(SolUnitRunner.class)
+@ExtendWith(SolUnitRunner.class)
+@TestMethodOrder(SolUnitRunner.class)
 public class BonusServiceTest {
 
 	private static BonusService service;
@@ -22,7 +24,7 @@ public class BonusServiceTest {
 
 	private static LocalDate hoje;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws InterruptedException {
 		Thread.sleep(1000);
 		this.hoje = LocalDate.now();
@@ -32,17 +34,17 @@ public class BonusServiceTest {
 
 	@Test
 	public void deveRetornarNomeCorretoDoFuncionario() {
-		Assert.assertEquals(this.funcionarioT.getNome(), "Rodrigo");
+		Assertions.assertEquals(this.funcionarioT.getNome(), "Rodrigo");
 	}
 
 	@Test
 	public void deveRetornarSalarioCorretoDoFuncionario() {
-		Assert.assertEquals(this.funcionarioT.getSalario(), new BigDecimal(10000));
+		Assertions.assertEquals(this.funcionarioT.getSalario(), new BigDecimal(10000));
 	}
 
 	@Test
 	public void deveRetornarDataAdmissaoCorretoDoFuncionario() {
-		Assert.assertEquals(this.funcionarioT.getDataAdmissao(), this.hoje);
+		Assertions.assertEquals(this.funcionarioT.getDataAdmissao(), this.hoje);
 	}
 
 	@Test
@@ -51,7 +53,7 @@ public class BonusServiceTest {
 
 		this.funcionarioT.setNome(novoNome);
 
-		Assert.assertEquals(this.funcionarioT.getNome(), novoNome);
+		Assertions.assertEquals(this.funcionarioT.getNome(), novoNome);
 	}
 
 	@Test
@@ -61,7 +63,7 @@ public class BonusServiceTest {
 
 		this.funcionarioT.setSalario(salarioNovo);
 
-		Assert.assertEquals(this.funcionarioT.getSalario(), salarioNovo);
+		Assertions.assertEquals(this.funcionarioT.getSalario(), salarioNovo);
 	}
 
 	@Test
@@ -70,7 +72,7 @@ public class BonusServiceTest {
 
 		this.funcionarioT.setDataAdmissao(dataAdmissaoNova);
 
-		Assert.assertEquals(this.funcionarioT.getDataAdmissao(), dataAdmissaoNova);
+		Assertions.assertEquals(this.funcionarioT.getDataAdmissao(), dataAdmissaoNova);
 	}
 
 	@Test
@@ -80,7 +82,7 @@ public class BonusServiceTest {
 			service.calcularBonus(this.funcionarioT);
 			fail("nao deu exception");
 		} catch (IllegalArgumentException e) {
-			Assert.assertEquals("Funcionario com salario maior do que R$1000 nao pode receber bonus!", e.getMessage());
+			Assertions.assertEquals("Funcionario com salario maior do que R$1000 nao pode receber bonus!", e.getMessage());
 		}
 	}
 
@@ -88,14 +90,14 @@ public class BonusServiceTest {
 	public void bonusDeveriaSer10PorCentoDoSalario() {
 		BigDecimal bonus = service.calcularBonus(this.funcionarioT);
 
-		Assert.assertEquals(new BigDecimal("1000.00"), bonus);
+		Assertions.assertEquals(new BigDecimal("1000.00"), bonus);
 	}
 
 	@Test
 	public void bonusDeveriaSerDezPorCentoParaSalarioDeExatamente10000() {
 		BigDecimal bonus = service.calcularBonus(this.funcionarioT);
 
-		Assert.assertEquals(new BigDecimal("1000.00"), bonus);
+		Assertions.assertEquals(new BigDecimal("1000.00"), bonus);
 	}
 
 	@Test
@@ -104,7 +106,7 @@ public class BonusServiceTest {
 
 		BigDecimal bonus = service.calcularBonus(this.funcionarioT);
 
-		Assert.assertEquals(new BigDecimal("0.00"), bonus);
+		Assertions.assertEquals(new BigDecimal("0.00"), bonus);
 	}
 
 	@Test
@@ -113,7 +115,7 @@ public class BonusServiceTest {
 
 		BigDecimal bonus = service.calcularBonus(this.funcionarioT);
 
-		Assert.assertEquals(new BigDecimal("50.00"), bonus);
+		Assertions.assertEquals(new BigDecimal("50.00"), bonus);
 	}
 
 	private Funcionario criarFuncionario(BigDecimal salario) {

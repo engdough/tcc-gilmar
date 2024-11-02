@@ -54,6 +54,7 @@ public class SolUnitRunner implements InvocationInterceptor, MethodOrderer {
     private boolean needsToRunBeforeFixture(Method actualMethod) {
     	//regra 1: roda se for safe, mas nao rodou before nenhuma vez
     	if (isSafeAndNotFirstBeforeExecution(actualMethod)) {
+			this.firstBeforeExecution = false;
     		return true;
     	}
     	
@@ -62,7 +63,7 @@ public class SolUnitRunner implements InvocationInterceptor, MethodOrderer {
     		return true;
     	}
     	
-    	//regra 3: se o before nunca foi executado (classe sem nenhum safe), executa
+    	//regra 3: Classe sem nenhum safe
     	if ( this.firstBeforeExecution ) {
     		return true;
     	}
@@ -99,11 +100,10 @@ public class SolUnitRunner implements InvocationInterceptor, MethodOrderer {
 
 		if (this.needsToRunBeforeFixture(method)) {
 			invocation.proceed();
-			this.firstBeforeExecution = false;
 			return;
 		}
 
-		if (!this.safeParser.isSafe(method)) {
+		if (!safeParser.isSafe(method)) {
 			this.firstNonSafeExecuted = true;
 		}
 
