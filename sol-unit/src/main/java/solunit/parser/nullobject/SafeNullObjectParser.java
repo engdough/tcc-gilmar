@@ -1,13 +1,15 @@
 package solunit.parser.nullobject;
 
-import org.junit.runners.model.FrameworkMethod;
+import java.lang.reflect.Method;
+
+import org.junit.jupiter.api.MethodDescriptor;
 
 import solunit.parser.SafeParser;
 
 public class SafeNullObjectParser implements SafeParser {
 	
 	@Override
-    public boolean isSafe(FrameworkMethod actualMethod) {
+    public boolean isSafe(Method actualMethod) {
     	return false;
     }
     

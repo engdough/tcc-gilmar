@@ -1,26 +1,24 @@
 package solunit.runner;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
-import org.junit.Test;
-import org.junit.internal.runners.model.ReflectiveCallable;
-import org.junit.internal.runners.statements.Fail;
-import org.junit.runner.Description;
-import org.junit.runner.notification.RunNotifier;
-import org.junit.runners.BlockJUnit4ClassRunner;
-import org.junit.runners.model.FrameworkMethod;
-import org.junit.runners.model.InitializationError;
-import org.junit.runners.model.Statement;
+import java.lang.reflect.Method;
+import java.util.Collections;
+
+
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.MethodOrdererContext;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.InvocationInterceptor;
+import org.junit.jupiter.api.extension.ReflectiveInvocationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import solunit.internal.sorter.SafeMethodSorter;
+
 import solunit.parser.SafeParser;
 import solunit.parser.SafeParserFactory;
 
-public class SolUnitRunner extends BlockJUnit4ClassRunner {
+public class SolUnitRunner implements InvocationInterceptor, MethodOrderer {
 	
 	/** Logger instance */
 	protected final Logger log = LoggerFactory.getLogger(getClass());
@@ -30,31 +28,17 @@ public class SolUnitRunner extends BlockJUnit4ClassRunner {
 	
 	//control variable for first non @Safe, that can use the same deploy instance from safe executions
 	boolean firstNonSafeExecuted;
-	
+
 	//parser that knows if a method is Safe
 	SafeParser safeParser;
 	
-	public SolUnitRunner(Class<?> klass) throws InitializationError {
-		super(klass);
-		
+	public SolUnitRunner() throws Exception {
+
 		this.firstBeforeExecution = true;
 		this.firstNonSafeExecuted = false;
 		this.safeParser = SafeParserFactory.createParser();
 	}
-
-	/**
-     * Creates a test to be excecuted
-     * @param method method annotated with @Test
-     * @return Object that will be execute the test method
-     * @throws Exception for some error
-     */
-    public Object createTest(FrameworkMethod method) throws Exception {
-    	//standard creation from JUnit
-        Object obj = super.createTest();
-
-        return obj;
-    }
-
+    
     //***************************************************************
     //
     //  Fixture rules
@@ -67,7 +51,7 @@ public class SolUnitRunner extends BlockJUnit4ClassRunner {
      * @param actualMethod object representing the actual test method 
      * @return true if needs to run @Before, false if can skip 
      */
-    private boolean needsToRunBeforeFixture(FrameworkMethod actualMethod) {
+    private boolean needsToRunBeforeFixture(Method actualMethod) {
     	//regra 1: roda se for safe, mas nao rodou before nenhuma vez
     	if (isSafeAndNotFirstBeforeExecution(actualMethod)) {
     		return true;
@@ -86,11 +70,11 @@ public class SolUnitRunner extends BlockJUnit4ClassRunner {
     	return false;
     }
     
-    private boolean isSafeAndNotFirstBeforeExecution(FrameworkMethod actualMethod) {
+    private boolean isSafeAndNotFirstBeforeExecution(Method actualMethod) {
     	return (this.safeParser.isSafe(actualMethod) && this.firstBeforeExecution );
     }
     
-    private boolean fistNonSafeWasExecuted(FrameworkMethod actualMethod) {
+    private boolean fistNonSafeWasExecuted(Method actualMethod) {
     	return (!this.safeParser.isSafe(actualMethod) && this.firstNonSafeExecuted );
     }
     
@@ -104,65 +88,25 @@ public class SolUnitRunner extends BlockJUnit4ClassRunner {
      * Returns the methods that run tests. Default implementation returns all
      * methods annotated with {@code @Test} 
      */
-    @Override
-    protected List<FrameworkMethod> computeTestMethods() {
-
-    	List<FrameworkMethod> methods = getTestClass().getAnnotatedMethods(Test.class);
-
-    	//creates a new List (JUnit default is 'unmodifiable list')
-    	List<FrameworkMethod> newList = new ArrayList<>();
-    	methods.forEach(newList::add);
-
-    	//Order methods to run "@Safe" first
-    	Collections.sort(newList, new SafeMethodSorter());
-
-        return newList;
-    }
-    
 	@Override
-    protected Statement methodBlock(FrameworkMethod method) {
-        Object test;
-        try {
-            test = new ReflectiveCallable() {
-                @Override
-                protected Object runReflectiveCall() throws Throwable {
-                    return createTest( method );
-                }
-            }.run();
-        } catch (Throwable e) {
-            return new Fail(e);
-        }
-
-        Statement statement = methodInvoker(method, test);
-        statement = possiblyExpectingExceptions(method, test, statement);
-
-        //verify the need to run @Before fixture
-        if ( this.needsToRunBeforeFixture(method) ) {
-        	statement = withBefores(method, test, statement);
-        	//if run once, check it
-        	this.firstBeforeExecution = false;
-        }
-
-        //mark first non safe execution when happens
-        if ( !this.safeParser.isSafe(method) ) {
-        	this.firstNonSafeExecuted = true;
-        }
-
-//		statement = withBefores(method, test, statement);
-
-        return statement;
-    }
+	public void orderMethods(MethodOrdererContext context) {
+		Collections.sort(context.getMethodDescriptors(), new SafeMethodSorter());
+	}
 
 	@Override
-	protected void runChild(final FrameworkMethod method, RunNotifier notifier) {
-        Description description = describeChild(method);
+	public void interceptBeforeEachMethod(Invocation<Void> invocation, ReflectiveInvocationContext<Method> reflectiveInvocationContext, ExtensionContext extensionContext) throws Throwable {
+		Method method = extensionContext.getRequiredTestMethod();
 
-        if (isIgnored(method)) {
-            notifier.fireTestIgnored(description);
-        } else {
-			Statement statement = methodBlock(method);
-			runLeaf(statement, description, notifier);
-			System.out.println();
-        }
-    }
+		if (this.needsToRunBeforeFixture(method)) {
+			invocation.proceed();
+			this.firstBeforeExecution = false;
+			return;
+		}
+
+		if (!this.safeParser.isSafe(method)) {
+			this.firstNonSafeExecuted = true;
+		}
+
+		invocation.skip();
+	}
 }

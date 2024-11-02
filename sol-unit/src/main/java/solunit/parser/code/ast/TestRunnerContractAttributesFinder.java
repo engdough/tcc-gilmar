@@ -3,8 +3,6 @@ package solunit.parser.code.ast;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.runner.RunWith;
-
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;

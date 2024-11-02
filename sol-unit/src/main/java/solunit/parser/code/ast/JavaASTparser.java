@@ -2,10 +2,11 @@ package solunit.parser.code.ast;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.runners.model.FrameworkMethod;
+import org.junit.jupiter.api.MethodDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +40,7 @@ public class JavaASTparser {
 		this.init();
 	}
 	
-	public boolean isSafe(FrameworkMethod method) {
+	public boolean isSafe(Method method) {
 		
 		//find method
 		for (MethodDeclaration m: this.testSafeMethods) {
