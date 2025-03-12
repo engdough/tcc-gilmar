@@ -11,12 +11,13 @@ public class ProjectNotSafeMethodFinder extends VoidVisitorAdapter<Void> {
 	
 	List<MethodDeclaration> listNotSafe;
 
-	List<MethodDeclaration> listSafe = new ArrayList<>();
+	List<MethodDeclaration> listSafe;
 
 	boolean safe;
 	
-	public ProjectNotSafeMethodFinder(List<MethodDeclaration> list) {
-		this.listNotSafe = list;
+	public ProjectNotSafeMethodFinder(List<MethodDeclaration> listNotSafe, List<MethodDeclaration> listSafe) {
+		this.listNotSafe = listNotSafe;
+		this.listSafe = listSafe;
 	}
 
 	@Override

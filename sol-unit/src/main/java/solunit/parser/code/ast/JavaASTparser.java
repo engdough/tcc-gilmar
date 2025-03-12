@@ -27,6 +27,7 @@ public class JavaASTparser {
 	List<ClassOrInterfaceDeclaration> projectClasses;
 	List<ClassOrInterfaceDeclaration> testClasses;
 	List<MethodDeclaration> projectNotSafeMethods;
+	List<MethodDeclaration> projectSafeMethods;
 	List<MethodDeclaration> testSafeMethods;
 
 	public JavaASTparser( String sourceDir, String mainSourceDir ) {
@@ -35,6 +36,7 @@ public class JavaASTparser {
 		this.testClasses = new ArrayList<>();
 		this.projectClasses = new ArrayList<>();
 		this.projectNotSafeMethods = new ArrayList<>();
+		this.projectSafeMethods = new ArrayList<>();
 		this.testSafeMethods = new ArrayList<>();
 		
 		this.init();
@@ -88,7 +90,7 @@ public class JavaASTparser {
 	
 	private void findProjectNotSafeMethods() {
 		this.projectClasses.stream().forEach( n -> {
-			new ProjectNotSafeMethodFinder( this.projectNotSafeMethods ).visit(n, null);
+			new ProjectNotSafeMethodFinder( this.projectNotSafeMethods, this.projectSafeMethods ).visit(n, null);
 		});
 	}
 	
@@ -142,4 +144,3 @@ public class JavaASTparser {
 		return null;
 	}
 }
-

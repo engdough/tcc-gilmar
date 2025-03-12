@@ -13,8 +13,6 @@ import com.github.javaparser.ast.expr.FieldAccessExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
-import solunit.annotations.Contract;
-
 public class TestRunnerSafeMethodFinder extends VoidVisitorAdapter<Void> {
 	
 	List<MethodDeclaration> list;
