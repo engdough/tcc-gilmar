@@ -64,4 +64,3 @@ public class ProjectNotSafeMethodFinder extends VoidVisitorAdapter<Void> {
 		return false;
 	}
 }
-

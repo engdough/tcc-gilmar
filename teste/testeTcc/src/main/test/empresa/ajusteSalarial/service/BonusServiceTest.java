@@ -1,10 +1,11 @@
-package ajusteSalarial.service;
+package empresa.ajusteSalarial.service;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import ajusteSalarial.service.BonusService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
