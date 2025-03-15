@@ -12,14 +12,12 @@ import solunit.internal.utilities.PropertiesReader;
 public class ProjectClassFinder extends VoidVisitorAdapter<Object> {
 	
 	List<ClassOrInterfaceDeclaration> list;
-	
-	//debug purposes
+
 	private String classOnProperties;
 	
 	public ProjectClassFinder( List<ClassOrInterfaceDeclaration> list ) {
 		this.list = list;
-		
-		//le o properties
+
 		try {
 			Properties testProperties = new PropertiesReader().loadProperties(Config.PROPERTIES_FILE);
 			classOnProperties = testProperties.getProperty("test.contract.class");

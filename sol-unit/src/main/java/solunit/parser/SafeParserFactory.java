@@ -20,18 +20,17 @@ public class SafeParserFactory {
 		}
 		
 		try {
-			//le o properties
 			Properties testProperties = new PropertiesReader().loadProperties(Config.PROPERTIES_FILE);
-			
-			//instancia do parser criada via reflexao
+
 			Class<?> clazz = Class.forName(testProperties.getProperty("safe.parser.class"));
+
 			instance  = (SafeParser) clazz.newInstance();
+
 			return instance;
 		} catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
-		
-		//fallback para annotation
+
 		return new SafeAnnotationParser();
 		
 	}

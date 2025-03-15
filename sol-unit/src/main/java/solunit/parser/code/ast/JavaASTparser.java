@@ -16,13 +16,11 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.utils.SourceRoot;
 
 public class JavaASTparser {
-	
-	/** Logger instance */
+
 	protected final Logger log = LoggerFactory.getLogger(getClass());
 
 	String sourceRootDir;
 	String mainSourcDir;
-	SourceRoot sourceRoot;
 
 	List<ClassOrInterfaceDeclaration> projectClasses;
 	List<ClassOrInterfaceDeclaration> testClasses;
@@ -43,11 +41,8 @@ public class JavaASTparser {
 	}
 	
 	public boolean isSafe(Method method) {
-		
-		//find method
 		for (MethodDeclaration m: this.testSafeMethods) {
 			if ( m.getName().asString().equals(method.getName()) ) {
-				//find class
 				if ( this.getClassFromTestMethodAsString(m).equals(method.getDeclaringClass().getSimpleName()) ) {
 					return true;
 				}
@@ -58,24 +53,19 @@ public class JavaASTparser {
 	}
 
 	private void init() {
-
 		log.info( "Initializing" );
-		
-		//find all contracts
+
 		this.findProjectClasses();
-		
-		//finds all safe methods on contracts
+
 		this.findProjectNotSafeMethods();
 		
-		this.printContractResults();
-		
-		//find test classes
+		this.printNotSafeResults();
+
 		this.findTestClasses();
-		
-		//find all safe methods on tests
+
 		this.findTestClassesSafeMethods();
 		
-		this.printTestClassResults();
+		this.printTestSafeResults();
 	}
 	
 	private void findProjectClasses() {
@@ -106,27 +96,27 @@ public class JavaASTparser {
 	
 	private void findTestClassesSafeMethods() {
 		TestRunnerSafeMethodFinder finder = new TestRunnerSafeMethodFinder( this.testSafeMethods );
-		finder.setContractClasses(this.projectClasses);
-		finder.setContractSafeMethods(this.projectNotSafeMethods);
+		finder.setProjectClasses(this.projectClasses);
+		finder.setProjectSafeMethods(this.projectNotSafeMethods);
 		
 		this.testClasses.stream().forEach( n -> {
 			finder.visit(n, null);
 		});
 	}
 	
-	private void printContractResults() {
+	private void printNotSafeResults() {
 		this.projectNotSafeMethods.stream().forEach( m -> log.info( String.format("Method not safe found: [%s].[%s]",
-																			this.getClassFromContractMethodAsString(m),
+																			this.getClassFromProjectMethodAsString(m),
 																			m.getName()) ) );
 	}
 	
-	private void printTestClassResults() {
+	private void printTestSafeResults() {
 		this.testSafeMethods.stream().forEach( m -> log.info( String.format("Safe test found: [%s].[%s]", 
 																			this.getClassFromTestMethodAsString(m),
 																			m.getName()) ) );
 	}
 	
-	private String getClassFromContractMethodAsString( MethodDeclaration m ) {
+	private String getClassFromProjectMethodAsString( MethodDeclaration m ) {
 		for ( ClassOrInterfaceDeclaration n: this.projectClasses ) {
 			if ( n.getMethods().contains(m) ) {
 				return n.getNameAsString();

@@ -1,6 +1,5 @@
 package solunit.parser.code.ast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.github.javaparser.ast.Node;
@@ -23,13 +22,13 @@ public class ProjectNotSafeMethodFinder extends VoidVisitorAdapter<Void> {
 	@Override
 	public void visit(MethodDeclaration md, Void arg) {
 		super.visit(md, arg);
-		safe = true;
+		this.safe = true;
 
 		md.getParentNode().get().getChildNodes().stream().forEach(a -> {
 			if (a.getChildNodes().size() == 1) {
 				String var = a.getChildNodes().get(0).toString();
 				if (md.toString().contains(var + " =")) {
-					safe = false;
+					this.safe = false;
 				}
 			}
 		});
@@ -50,18 +49,5 @@ public class ProjectNotSafeMethodFinder extends VoidVisitorAdapter<Void> {
 		} else {
 			this.listSafe.add(md);
 		}
-	}
-	
-	private boolean returnTransactionReceipt(MethodDeclaration md) {
-		
-		if (md.getType().getChildNodes().size() == 2) {
-			Node n1 = md.getType().getChildNodes().get(0);
-			Node n2 = md.getType().getChildNodes().get(1);
-			
-			//child 1 must be RemoteCall AND child 2 must be TransactionReceipt
-			return n1.toString().equals("RemoteCall") && n2.toString().equals("TransactionReceipt");
-		}
-		
-		return false;
 	}
 }

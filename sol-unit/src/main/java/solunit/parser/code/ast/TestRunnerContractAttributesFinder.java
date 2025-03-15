@@ -18,8 +18,6 @@ public class TestRunnerContractAttributesFinder extends VoidVisitorAdapter<Objec
 	@Override
     public void visit(ClassOrInterfaceDeclaration n, Object arg) {
         super.visit(n, arg);
-
-        
     }
 
 }

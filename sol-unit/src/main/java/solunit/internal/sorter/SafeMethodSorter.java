@@ -16,9 +16,7 @@ public class SafeMethodSorter implements Comparator<MethodDescriptor> {
 	}
 
     public int compare(MethodDescriptor m1, MethodDescriptor m2) {
-
     	boolean i1Safe = parser.isSafe(m1.getMethod());
-
     	boolean i2Safe = parser.isSafe(m2.getMethod());
 
         if (i1Safe && !i2Safe) {
@@ -28,7 +26,5 @@ public class SafeMethodSorter implements Comparator<MethodDescriptor> {
             return 1;
         }
         return 0;
-    	
     }
-    
 }
