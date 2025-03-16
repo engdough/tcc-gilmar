@@ -19,7 +19,7 @@ public class TestRunnerSafeMethodFinder extends VoidVisitorAdapter<Void> {
 
 	List<ClassOrInterfaceDeclaration> projectClasses;
 
-	List<MethodDeclaration> projectSafeMethods;
+	List<MethodDeclaration> projectNotSafeMethods;
 	
 	public TestRunnerSafeMethodFinder(List<MethodDeclaration> list) {
 		this.list = list;
@@ -29,8 +29,8 @@ public class TestRunnerSafeMethodFinder extends VoidVisitorAdapter<Void> {
 		this.projectClasses = projectClasses;
 	}
 
-	public void setProjectSafeMethods(List<MethodDeclaration> projectSafeMethods) {
-		this.projectSafeMethods = projectSafeMethods;
+	public void setProjectNotSafeMethods(List<MethodDeclaration> projectNotSafeMethods) {
+		this.projectNotSafeMethods = projectNotSafeMethods;
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class TestRunnerSafeMethodFinder extends VoidVisitorAdapter<Void> {
 	private boolean isSafe(MethodDeclaration md) {
 		FieldAccessFinder a = new FieldAccessFinder(md);
 		a.setProjectClasses(this.projectClasses);
-		a.setProjectSafeMethods(this.projectSafeMethods);
+		a.setProjectNotSafeMethods(this.projectNotSafeMethods);
 		a.visit(md, null);
 		return a.isSafe();
 	}
@@ -60,7 +60,7 @@ class FieldAccessFinder extends VoidVisitorAdapter<Void> {
 	
 	List<ClassOrInterfaceDeclaration> projectClasses;
 
-	List<MethodDeclaration> projectSafeMethods;
+	List<MethodDeclaration> projectNotSafeMethods;
 	
 	MethodDeclaration md;
 
@@ -75,15 +75,14 @@ class FieldAccessFinder extends VoidVisitorAdapter<Void> {
 	public void setProjectClasses(List<ClassOrInterfaceDeclaration> projectClasses) {
 		this.projectClasses = projectClasses;
 	}
-	public void setProjectSafeMethods(List<MethodDeclaration> projectSafeMethods) {
-		this.projectSafeMethods = projectSafeMethods;
+	public void setProjectNotSafeMethods(List<MethodDeclaration> projectNotSafeMethods) {
+		this.projectNotSafeMethods = projectNotSafeMethods;
 	}
 	
 	@Override
     public void visit(FieldAccessExpr field, Void arg) {
         super.visit(field, arg);
-        
-        String fieldAccessName = field.getNameAsString();
+
 		this.safe = true;
 
         field.findCompilationUnit().get().findAll(FieldDeclaration.class)
@@ -91,9 +90,9 @@ class FieldAccessFinder extends VoidVisitorAdapter<Void> {
 	    		if ( a.isStatic() ) {
 	    			String fieldName = a.getVariable(0).getNameAsString();
 					String testBody = md.getBody().toString();
-					this.projectSafeMethods.stream().forEach(b -> {
+					this.projectNotSafeMethods.stream().forEach(b -> {
 						if (testBody.contains(fieldName + " =") || testBody.contains(fieldName + "." + b.getNameAsString())) {
-							safe = false;
+							this.safe = false;
 						};
 					});
 	    		}
@@ -102,15 +101,13 @@ class FieldAccessFinder extends VoidVisitorAdapter<Void> {
         if ( projectAccess ) {
         	md.findAll(MethodCallExpr.class).stream().forEach( a -> {
         		if( a.getScope().isPresent() && a.getScope().get().containsWithin(field) ) {
-        			if ( !a.getName().asString().equals("send") ) {
-        				boolean found =
-    						this.projectSafeMethods
-        						.stream()
-        						.filter( s -> s.getNameAsString().equals( a.getName().asString() ) )
-        						.findFirst().isPresent();
-        				if ( !found ) {
-        					safe = false;
-        				}
+					boolean found = this.projectNotSafeMethods
+							.stream()
+							.filter( s -> s.getNameAsString().equals( a.getName().asString() ) )
+							.findFirst().isPresent();
+					if ( !found ) {
+						this.safe = false;
+
         			}
         		}
         	} );

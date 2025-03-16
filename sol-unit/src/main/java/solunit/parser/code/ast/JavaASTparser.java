@@ -97,7 +97,7 @@ public class JavaASTparser {
 	private void findTestClassesSafeMethods() {
 		TestRunnerSafeMethodFinder finder = new TestRunnerSafeMethodFinder( this.testSafeMethods );
 		finder.setProjectClasses(this.projectClasses);
-		finder.setProjectSafeMethods(this.projectNotSafeMethods);
+		finder.setProjectNotSafeMethods(this.projectNotSafeMethods);
 		
 		this.testClasses.stream().forEach( n -> {
 			finder.visit(n, null);
