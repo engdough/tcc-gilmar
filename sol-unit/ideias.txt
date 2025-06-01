@@ -1,4 +1,0 @@
-1 - reimplementar o wrapper sol <-> java
-2 - esta reimplementação vai transformar os métodos não view em @Dirty no contrato
-3 - as chamadas de metodos @Dirty de contratos irá marcar um atributo do wrapper java como "dirty"
-4 - caso o wrapper esteja "dirty" o solidity runner faz um novo deploy (e roda novamente os @Before)

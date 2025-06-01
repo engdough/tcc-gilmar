@@ -12,10 +12,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import ajusteSalarial.modelo.Desempenho;
 import ajusteSalarial.modelo.Funcionario;
-import solunit.runner.SolUnitRunner;
+import sunit.runner.SunitRunner;
 
-@ExtendWith(SolUnitRunner.class)
-@TestMethodOrder(SolUnitRunner.class)
+@ExtendWith(SunitRunner.class)
+@TestMethodOrder(SunitRunner.class)
 public class ReajusteServiceTest {
 
 	private static ReajusteService service;
