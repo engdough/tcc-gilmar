@@ -20,7 +20,8 @@ public class TestRunnerClassFinder extends VoidVisitorAdapter<Object> {
 	@Override
     public void visit(ClassOrInterfaceDeclaration n, Object arg) {
         super.visit(n, arg);
-        
+
+		//adicona as classes marcadas com a extensao SunitRunner
         Optional<AnnotationExpr> a = n.getAnnotationByClass(ExtendWith.class);
         if ( a.isPresent() && a.get().getChildNodes().get(1).toString().equals("SunitRunner.class") ) {
         	this.list.add(n);

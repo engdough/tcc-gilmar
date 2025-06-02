@@ -6,10 +6,9 @@ import java.lang.reflect.Method;
 import sunit.annotations.Safe;
 import sunit.constants.Config;
 import sunit.internal.utilities.PropertiesReader;
-import sunit.parser.SafeParser;
 import sunit.parser.code.ast.JavaASTparser;
 
-public class SafeCombinedParser implements SafeParser {
+public class SafeCombinedParser {
 
 	private JavaASTparser javaParser;
 	
@@ -24,10 +23,9 @@ public class SafeCombinedParser implements SafeParser {
 	}
 
 
-	@Override
 	public boolean isSafe(Method actualMethod) {
 		Safe safe = actualMethod.getAnnotation(Safe.class);
     	return (safe != null) || this.javaParser.isSafe(actualMethod);
 	}
-	
+
 }

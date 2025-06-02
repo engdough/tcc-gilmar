@@ -3,22 +3,17 @@ package sunit.parser.code.ast;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.FieldAccessExpr;
-import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
 public class TestRunnerSafeMethodFinder extends VoidVisitorAdapter<Void> {
 	
 	List<MethodDeclaration> list;
-
 	List<ClassOrInterfaceDeclaration> projectClasses;
-
 	List<MethodDeclaration> projectNotSafeMethods;
 	
 	public TestRunnerSafeMethodFinder(List<MethodDeclaration> list) {
@@ -42,7 +37,6 @@ public class TestRunnerSafeMethodFinder extends VoidVisitorAdapter<Void> {
 				this.list.add(md);
 			}
 		}
-			
 	}
 	
 	private boolean isSafe(MethodDeclaration md) {
@@ -56,25 +50,21 @@ public class TestRunnerSafeMethodFinder extends VoidVisitorAdapter<Void> {
 
 class FieldAccessFinder extends VoidVisitorAdapter<Void> {
 
-	protected final Logger log = LoggerFactory.getLogger(getClass());
-	
 	List<ClassOrInterfaceDeclaration> projectClasses;
-
 	List<MethodDeclaration> projectNotSafeMethods;
-	
 	MethodDeclaration md;
-
 	boolean projectAccess;
-	
 	boolean safe;
 	
 	public FieldAccessFinder(MethodDeclaration md) {
 		this.md = md;
 		this.safe = true;
 	}
+
 	public void setProjectClasses(List<ClassOrInterfaceDeclaration> projectClasses) {
 		this.projectClasses = projectClasses;
 	}
+
 	public void setProjectNotSafeMethods(List<MethodDeclaration> projectNotSafeMethods) {
 		this.projectNotSafeMethods = projectNotSafeMethods;
 	}
@@ -83,13 +73,13 @@ class FieldAccessFinder extends VoidVisitorAdapter<Void> {
     public void visit(FieldAccessExpr field, Void arg) {
         super.visit(field, arg);
 
-		this.safe = true;
-
         field.findCompilationUnit().get().findAll(FieldDeclaration.class)
         	.stream().forEach( a -> {
+				//todo: verficar uso do static se é necessario
 	    		if ( a.isStatic() ) {
 	    			String fieldName = a.getVariable(0).getNameAsString();
 					String testBody = md.getBody().toString();
+					//verifica se altera o valor do SUT através do = ou se o SUT utiliza algum metodo não seguro
 					this.projectNotSafeMethods.stream().forEach(b -> {
 						if (testBody.contains(fieldName + " =") || testBody.contains(fieldName + "." + b.getNameAsString())) {
 							this.safe = false;
@@ -98,21 +88,20 @@ class FieldAccessFinder extends VoidVisitorAdapter<Void> {
 	    		}
 	    	});
 
-        if ( projectAccess ) {
-        	md.findAll(MethodCallExpr.class).stream().forEach( a -> {
-        		if( a.getScope().isPresent() && a.getScope().get().containsWithin(field) ) {
-					boolean found = this.projectNotSafeMethods
-							.stream()
-							.filter( s -> s.getNameAsString().equals( a.getName().asString() ) )
-							.findFirst().isPresent();
-					if ( !found ) {
-						this.safe = false;
-
-        			}
-        		}
-        	} );
-        }
-        
+//        if ( projectAccess ) {
+//        	md.findAll(MethodCallExpr.class).stream().forEach( a -> {
+//        		if( a.getScope().isPresent() && a.getScope().get().containsWithin(field) ) {
+//					boolean found = this.projectNotSafeMethods
+//							.stream()
+//							.filter( s -> s.getNameAsString().equals( a.getName().asString() ) )
+//							.findFirst().isPresent();
+//					if ( !found ) {
+//						this.safe = false;
+//
+//        			}
+//        		}
+//        	} );
+//        }
     }
 	
 	public boolean isSafe() {
