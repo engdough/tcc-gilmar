@@ -6,12 +6,13 @@
       <sourceFolder url="file://$MODULE_DIR$/testeTcc/src/main/empresa" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/testeTcc/src/main/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/testeTcc/src/main/test/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/tcc-gilmar/sunit/src/main/java" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-api:5.9.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-commons:1.9.2" level="project" />
-    <orderEntry type="module" module-name="sunit" />
+    <orderEntry type="module" module-name="sunit" scope="TEST" />
   </component>
 </module>
