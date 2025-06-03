@@ -10,9 +10,9 @@ import sunit.parser.code.ast.JavaASTparser;
 
 public class SafeParser {
 
-	private JavaASTparser javaParser;
+	private static JavaASTparser javaParser;
 	
-	public  SafeParser() {
+	public SafeParser() {
 		if (javaParser != null) {
 			return;
 		}
@@ -20,7 +20,7 @@ public class SafeParser {
 		try {
 			String testSourceDir = new PropertiesReader().loadProperties(Config.PROPERTIES_FILE).getProperty("test.src.dir");
 			String mainSourceDir = new PropertiesReader().loadProperties(Config.PROPERTIES_FILE).getProperty("main.src.dir");
-			this.javaParser = new JavaASTparser( testSourceDir, mainSourceDir );
+			javaParser = new JavaASTparser( testSourceDir, mainSourceDir );
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -28,6 +28,6 @@ public class SafeParser {
 
 	public boolean isSafe(Method actualMethod) {
 		Safe safe = actualMethod.getAnnotation(Safe.class);
-		return (safe != null) || this.javaParser.isSafe(actualMethod);
+		return (safe != null) || javaParser.isSafe(actualMethod);
 	}
 }
