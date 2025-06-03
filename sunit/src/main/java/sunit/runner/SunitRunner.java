@@ -19,7 +19,7 @@ public class SunitRunner implements InvocationInterceptor, MethodOrderer {
 	boolean firstNonSafeExecuted;
 	SafeParser safeParser;
 	
-	public SunitRunner() throws Exception {
+	public SunitRunner() {
 		this.firstExecution = true;
 		this.firstNonSafeExecuted = false;
 		this.safeParser = new SafeParser();
@@ -34,7 +34,7 @@ public class SunitRunner implements InvocationInterceptor, MethodOrderer {
 	public void interceptBeforeEachMethod(Invocation<Void> invocation, ReflectiveInvocationContext<Method> reflectiveInvocationContext, ExtensionContext extensionContext) throws Throwable {
 		Method method = extensionContext.getRequiredTestMethod();
 
-		if (this.needsToRunBeforeFixture(method)) {
+		if (this.needsToRunBeforeEachFixture(method)) {
 			invocation.proceed();
 			return;
 		}
@@ -46,9 +46,9 @@ public class SunitRunner implements InvocationInterceptor, MethodOrderer {
 		invocation.skip();
 	}
 
-    private boolean needsToRunBeforeFixture(Method actualMethod) {
+    private boolean needsToRunBeforeEachFixture(Method actualMethod) {
     	//regra 1: roda se for safe, mas nao rodou before nenhuma vez
-    	if (isSafeAndNotFirstBeforeExecution(actualMethod)) {
+    	if (isSafeAndNotFirstBeforeEachExecution(actualMethod)) {
 			this.firstExecution = false;
     		return true;
     	}
@@ -66,7 +66,7 @@ public class SunitRunner implements InvocationInterceptor, MethodOrderer {
     	return false;
     }
     
-    private boolean isSafeAndNotFirstBeforeExecution(Method actualMethod) {
+    private boolean isSafeAndNotFirstBeforeEachExecution(Method actualMethod) {
     	return (this.safeParser.isSafe(actualMethod) && this.firstExecution );
     }
     
