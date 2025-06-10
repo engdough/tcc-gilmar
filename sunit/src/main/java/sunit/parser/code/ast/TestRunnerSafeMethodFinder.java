@@ -13,15 +13,10 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 public class TestRunnerSafeMethodFinder extends VoidVisitorAdapter<Void> {
 	
 	List<MethodDeclaration> list;
-	List<ClassOrInterfaceDeclaration> projectClasses;
 	List<MethodDeclaration> projectNotSafeMethods;
 	
 	public TestRunnerSafeMethodFinder(List<MethodDeclaration> list) {
 		this.list = list;
-	}
-
-	public void setProjectClasses(List<ClassOrInterfaceDeclaration> projectClasses) {
-		this.projectClasses = projectClasses;
 	}
 
 	public void setProjectNotSafeMethods(List<MethodDeclaration> projectNotSafeMethods) {
@@ -41,7 +36,6 @@ public class TestRunnerSafeMethodFinder extends VoidVisitorAdapter<Void> {
 	
 	private boolean isSafe(MethodDeclaration md) {
 		TestMethodVerfy a = new TestMethodVerfy(md);
-		a.setProjectClasses(this.projectClasses);
 		a.setProjectNotSafeMethods(this.projectNotSafeMethods);
 		a.visit(md, null);
 		return a.isSafe();
@@ -50,25 +44,20 @@ public class TestRunnerSafeMethodFinder extends VoidVisitorAdapter<Void> {
 
 class TestMethodVerfy extends VoidVisitorAdapter<Void> {
 
-	List<ClassOrInterfaceDeclaration> projectClasses;
 	List<MethodDeclaration> projectNotSafeMethods;
 	MethodDeclaration md;
 	boolean projectAccess;
 	boolean safe;
-	
+
 	public TestMethodVerfy(MethodDeclaration md) {
 		this.md = md;
 		this.safe = true;
 	}
 
-	public void setProjectClasses(List<ClassOrInterfaceDeclaration> projectClasses) {
-		this.projectClasses = projectClasses;
-	}
-
 	public void setProjectNotSafeMethods(List<MethodDeclaration> projectNotSafeMethods) {
 		this.projectNotSafeMethods = projectNotSafeMethods;
 	}
-	
+
 	@Override
     public void visit(FieldAccessExpr field, Void arg) {
         super.visit(field, arg);
@@ -88,7 +77,7 @@ class TestMethodVerfy extends VoidVisitorAdapter<Void> {
 	    		}
 	    	});
     }
-	
+
 	public boolean isSafe() {
 		return safe;
 	}
