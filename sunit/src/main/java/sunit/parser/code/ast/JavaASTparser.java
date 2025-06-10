@@ -98,13 +98,15 @@ public class JavaASTparser {
 	}
 	
 	private void printNotSafeResults() {
+		log.info("Metodos não seguro encontrados: " + this.projectNotSafeMethods.size());
 		this.projectNotSafeMethods.stream().forEach( m -> log.info( String.format("Method not safe found: [%s].[%s]",
 																			this.getClassFromProjectMethodAsString(m),
 																			m.getName()) ) );
 	}
 	
 	private void printTestSafeResults() {
-		this.testSafeMethods.stream().forEach( m -> log.info( String.format("Safe test found: [%s].[%s]", 
+		log.info("Metodos de teste seguro encontrados: " + this.testSafeMethods.size());
+		this.testSafeMethods.stream().forEach( m -> log.info( String.format("Safe test found: [%s].[%s]",
 																			this.getClassFromTestMethodAsString(m),
 																			m.getName()) ) );
 	}

@@ -24,7 +24,7 @@ public class ReajusteServiceTest {
 
 	@BeforeEach
 	public void setUp() throws InterruptedException{
-		Thread.sleep(1000);
+		//Thread.sleep(1000);
 		this.service = new ReajusteService();
 		this.funcionario = new Funcionario("Fulano", LocalDate.now(), new BigDecimal("2000.00"));
 	}

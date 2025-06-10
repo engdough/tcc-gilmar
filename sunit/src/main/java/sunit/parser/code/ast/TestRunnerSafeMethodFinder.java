@@ -87,21 +87,6 @@ class FieldAccessFinder extends VoidVisitorAdapter<Void> {
 					});
 	    		}
 	    	});
-
-//        if ( projectAccess ) {
-//        	md.findAll(MethodCallExpr.class).stream().forEach( a -> {
-//        		if( a.getScope().isPresent() && a.getScope().get().containsWithin(field) ) {
-//					boolean found = this.projectNotSafeMethods
-//							.stream()
-//							.filter( s -> s.getNameAsString().equals( a.getName().asString() ) )
-//							.findFirst().isPresent();
-//					if ( !found ) {
-//						this.safe = false;
-//
-//        			}
-//        		}
-//        	} );
-//        }
     }
 	
 	public boolean isSafe() {

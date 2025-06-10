@@ -20,14 +20,12 @@ import sunit.runner.SunitRunner;
 public class BonusServiceTest {
 
 	private static BonusService service;
-
 	private static Funcionario funcionarioT;
-
 	private static LocalDate hoje;
 
 	@BeforeEach
 	public void setUp() throws InterruptedException {
-		Thread.sleep(1000);
+		//Thread.sleep(1000);
 		this.hoje = LocalDate.now();
 		this.service = new BonusService();
 		this.funcionarioT = criarFuncionario(new BigDecimal(10000));
@@ -51,7 +49,6 @@ public class BonusServiceTest {
 	@Test
 	public void deveAlterarNomeCorretamenteDoFuncionario() {
 		String novoNome = "Rodrigo T";
-
 		this.funcionarioT.setNome(novoNome);
 
 		Assertions.assertEquals(this.funcionarioT.getNome(), novoNome);
@@ -59,9 +56,7 @@ public class BonusServiceTest {
 
 	@Test
 	public void deveAlterarSalarioCorretamenteDoFuncionario() {
-
 		BigDecimal salarioNovo = new BigDecimal(5000);
-
 		this.funcionarioT.setSalario(salarioNovo);
 
 		Assertions.assertEquals(this.funcionarioT.getSalario(), salarioNovo);
@@ -70,7 +65,6 @@ public class BonusServiceTest {
 	@Test
 	public void deveAlterarDataAdmissaoCorretamenteDoFuncionario() {
 		LocalDate dataAdmissaoNova = LocalDate.now().minusDays(10);
-
 		this.funcionarioT.setDataAdmissao(dataAdmissaoNova);
 
 		Assertions.assertEquals(this.funcionarioT.getDataAdmissao(), dataAdmissaoNova);
@@ -104,7 +98,6 @@ public class BonusServiceTest {
 	@Test
 	public void bonusDeveriaSerZeroPorCentoParaSalarioDeExatamente0() {
 		this.funcionarioT = criarFuncionario(new BigDecimal(0));
-
 		BigDecimal bonus = service.calcularBonus(this.funcionarioT);
 
 		Assertions.assertEquals(new BigDecimal("0.00"), bonus);
@@ -113,7 +106,6 @@ public class BonusServiceTest {
 	@Test
 	public void bonusDeveriaSer50ParaSalarioDeExatamente0() {
 		this.funcionarioT = criarFuncionario(new BigDecimal(500));
-
 		BigDecimal bonus = service.calcularBonus(this.funcionarioT);
 
 		Assertions.assertEquals(new BigDecimal("50.00"), bonus);
