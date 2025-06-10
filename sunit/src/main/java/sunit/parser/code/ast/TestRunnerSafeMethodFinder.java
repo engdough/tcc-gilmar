@@ -40,7 +40,7 @@ public class TestRunnerSafeMethodFinder extends VoidVisitorAdapter<Void> {
 	}
 	
 	private boolean isSafe(MethodDeclaration md) {
-		FieldAccessFinder a = new FieldAccessFinder(md);
+		TestMethodVerfy a = new TestMethodVerfy(md);
 		a.setProjectClasses(this.projectClasses);
 		a.setProjectNotSafeMethods(this.projectNotSafeMethods);
 		a.visit(md, null);
@@ -48,7 +48,7 @@ public class TestRunnerSafeMethodFinder extends VoidVisitorAdapter<Void> {
 	}
 }
 
-class FieldAccessFinder extends VoidVisitorAdapter<Void> {
+class TestMethodVerfy extends VoidVisitorAdapter<Void> {
 
 	List<ClassOrInterfaceDeclaration> projectClasses;
 	List<MethodDeclaration> projectNotSafeMethods;
@@ -56,7 +56,7 @@ class FieldAccessFinder extends VoidVisitorAdapter<Void> {
 	boolean projectAccess;
 	boolean safe;
 	
-	public FieldAccessFinder(MethodDeclaration md) {
+	public TestMethodVerfy(MethodDeclaration md) {
 		this.md = md;
 		this.safe = true;
 	}
