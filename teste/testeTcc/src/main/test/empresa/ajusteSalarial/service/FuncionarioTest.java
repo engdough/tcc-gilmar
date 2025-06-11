@@ -16,7 +16,7 @@ import sunit.runner.SunitRunner;
 
 @ExtendWith(SunitRunner.class)
 @TestMethodOrder(SunitRunner.class)
-public class ReajusteServiceTest {
+public class FuncionarioTest {
 
 	private static ReajusteService service;
 
