@@ -10,10 +10,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import src.br.ufsc.ine.leb.roza.exceptions.NegativeRelevantSetSizeException;
 import src.br.ufsc.ine.leb.roza.exceptions.RecallLevelOutOfBoundsException;
-import sunit.runner.SunitRunner;
+import sunit.runner.SUnitRunner;
 
-@ExtendWith(SunitRunner.class)
-@TestMethodOrder(SunitRunner.class)
+@ExtendWith(SUnitRunner.class)
+@TestMethodOrder(SUnitRunner.class)
 class RecallLevelTest {
 
 	@Test

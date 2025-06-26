@@ -3,7 +3,6 @@ package sunit.runner;
 import java.lang.reflect.Method;
 import java.util.Collections;
 
-
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.MethodOrdererContext;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -13,13 +12,13 @@ import org.junit.jupiter.api.extension.ReflectiveInvocationContext;
 import sunit.internal.sorter.SafeMethodSorter;
 import sunit.parser.SafeParser;
 
-public class SunitRunner implements InvocationInterceptor, MethodOrderer {
+public class SUnitRunner implements InvocationInterceptor, MethodOrderer {
 
+	SafeParser safeParser;
 	boolean firstExecution;
 	boolean firstNonSafeExecuted;
-	SafeParser safeParser;
 	
-	public SunitRunner() {
+	public SUnitRunner() {
 		this.firstExecution = true;
 		this.firstNonSafeExecuted = false;
 		this.safeParser = new SafeParser();

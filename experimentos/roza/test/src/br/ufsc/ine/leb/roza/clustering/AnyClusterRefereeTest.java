@@ -15,10 +15,10 @@ import src.br.ufsc.ine.leb.roza.Cluster;
 import src.br.ufsc.ine.leb.roza.TestCase;
 import src.br.ufsc.ine.leb.roza.exceptions.NoCombinationToChooseException;
 import src.br.ufsc.ine.leb.roza.utils.CollectionUtils;
-import sunit.runner.SunitRunner;
+import sunit.runner.SUnitRunner;
 
-@ExtendWith(SunitRunner.class)
-@TestMethodOrder(SunitRunner.class)
+@ExtendWith(SUnitRunner.class)
+@TestMethodOrder(SUnitRunner.class)
 class AnyClusterRefereeTest {
 
 	private static Referee referee;

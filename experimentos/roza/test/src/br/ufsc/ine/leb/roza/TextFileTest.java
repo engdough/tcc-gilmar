@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
-import sunit.runner.SunitRunner;
+import sunit.runner.SUnitRunner;
 
-@ExtendWith(SunitRunner.class)
-@TestMethodOrder(SunitRunner.class)
+@ExtendWith(SUnitRunner.class)
+@TestMethodOrder(SUnitRunner.class)
 class TextFileTest {
 
 	@Test

@@ -13,10 +13,10 @@ import src.br.ufsc.ine.leb.roza.Field;
 import src.br.ufsc.ine.leb.roza.Statement;
 import src.br.ufsc.ine.leb.roza.TestClass;
 import src.br.ufsc.ine.leb.roza.TextFile;
-import sunit.runner.SunitRunner;
+import sunit.runner.SUnitRunner;
 
-@ExtendWith(SunitRunner.class)
-@TestMethodOrder(SunitRunner.class)
+@ExtendWith(SUnitRunner.class)
+@TestMethodOrder(SUnitRunner.class)
 class Junit4TestClassParserTest {
 
 	private static TestClassParser parser;

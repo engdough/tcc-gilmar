@@ -16,10 +16,10 @@ import src.br.ufsc.ine.leb.roza.Cluster;
 import src.br.ufsc.ine.leb.roza.Statement;
 import src.br.ufsc.ine.leb.roza.TestCase;
 import src.br.ufsc.ine.leb.roza.TestClass;
-import sunit.runner.SunitRunner;
+import sunit.runner.SUnitRunner;
 
-@ExtendWith(SunitRunner.class)
-@TestMethodOrder(SunitRunner.class)
+@ExtendWith(SUnitRunner.class)
+@TestMethodOrder(SUnitRunner.class)
 public class SimpleClusterRefactorTest {
 
 	private static TestClassNamingStrategy namingStrategy;

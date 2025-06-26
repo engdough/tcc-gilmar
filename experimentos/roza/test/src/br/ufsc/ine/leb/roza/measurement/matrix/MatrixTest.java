@@ -16,10 +16,10 @@ import src.br.ufsc.ine.leb.roza.TestCaseMaterialization;
 import src.br.ufsc.ine.leb.roza.measurement.intersector.Intersector;
 import src.br.ufsc.ine.leb.roza.measurement.matrix.simian.SimianMatrixElementToKeyConverter;
 import src.br.ufsc.ine.leb.roza.measurement.matrix.simian.SimianMatrixValueFactory;
-import sunit.runner.SunitRunner;
+import sunit.runner.SUnitRunner;
 
-@ExtendWith(SunitRunner.class)
-@TestMethodOrder(SunitRunner.class)
+@ExtendWith(SUnitRunner.class)
+@TestMethodOrder(SUnitRunner.class)
 class MatrixTest {
 
 	@Test

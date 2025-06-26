@@ -18,7 +18,7 @@ public class JavaASTparser {
 	protected final Logger log = LoggerFactory.getLogger(getClass());
 
 	String testSourceRootDir;
-	String mainSourceDir;
+	String mainSourceRootDir;
 
 	List<ClassOrInterfaceDeclaration> projectClasses;
 	List<ClassOrInterfaceDeclaration> testClasses;
@@ -28,7 +28,7 @@ public class JavaASTparser {
 
 	public JavaASTparser( String testSourceDir, String mainSourceDir ) {
 		this.testSourceRootDir = testSourceDir;
-		this.mainSourceDir = mainSourceDir;
+		this.mainSourceRootDir = mainSourceDir;
 		this.testClasses = new ArrayList<>();
 		this.projectClasses = new ArrayList<>();
 		this.projectNotSafeMethods = new ArrayList<>();
@@ -68,7 +68,7 @@ public class JavaASTparser {
             } catch (IOException e) {
                 new RuntimeException(e);
             }
-		}).explore( new File(this.mainSourceDir) );
+		}).explore( new File(this.mainSourceRootDir) );
 	}
 	
 	private void findProjectNotSafeMethods() {

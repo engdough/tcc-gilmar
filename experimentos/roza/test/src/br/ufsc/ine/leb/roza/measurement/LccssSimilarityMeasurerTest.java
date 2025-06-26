@@ -18,10 +18,10 @@ import src.br.ufsc.ine.leb.roza.materialization.Junit4WithAssertionsTestCaseMate
 import src.br.ufsc.ine.leb.roza.materialization.TestCaseMaterializer;
 import src.br.ufsc.ine.leb.roza.utils.FolderUtils;
 import src.br.ufsc.ine.leb.roza.utils.comparator.SimilarityAssessmentComparatorByScoreSourceNameAndTargetName;
-import sunit.runner.SunitRunner;
+import sunit.runner.SUnitRunner;
 
-@ExtendWith(SunitRunner.class)
-@TestMethodOrder(SunitRunner.class)
+@ExtendWith(SUnitRunner.class)
+@TestMethodOrder(SUnitRunner.class)
 class LccssSimilarityMeasurerTest {
 
 	private static TestCaseMaterializer materializer;

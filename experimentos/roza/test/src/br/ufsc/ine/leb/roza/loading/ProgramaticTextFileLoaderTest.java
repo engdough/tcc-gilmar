@@ -12,10 +12,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import src.br.ufsc.ine.leb.roza.TextFile;
 import src.br.ufsc.ine.leb.roza.utils.FolderUtils;
-import sunit.runner.SunitRunner;
+import sunit.runner.SUnitRunner;
 
-@ExtendWith(SunitRunner.class)
-@TestMethodOrder(SunitRunner.class)
+@ExtendWith(SUnitRunner.class)
+@TestMethodOrder(SUnitRunner.class)
 class ProgramaticTextFileLoaderTest {
 
 	private static TextFileLoader loader;

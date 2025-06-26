@@ -16,10 +16,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import src.br.ufsc.ine.leb.roza.Cluster;
 import src.br.ufsc.ine.leb.roza.TestCase;
-import sunit.runner.SunitRunner;
+import sunit.runner.SUnitRunner;
 
-@ExtendWith(SunitRunner.class)
-@TestMethodOrder(SunitRunner.class)
+@ExtendWith(SUnitRunner.class)
+@TestMethodOrder(SUnitRunner.class)
 class LevelTest {
 
 	private static Cluster alphaCluster;

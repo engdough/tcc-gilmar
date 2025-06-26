@@ -16,10 +16,10 @@ import src.br.ufsc.ine.leb.roza.TestCase;
 import src.br.ufsc.ine.leb.roza.TestCaseMaterialization;
 import src.br.ufsc.ine.leb.roza.utils.FileUtils;
 import src.br.ufsc.ine.leb.roza.utils.FolderUtils;
-import sunit.runner.SunitRunner;
+import sunit.runner.SUnitRunner;
 
-@ExtendWith(SunitRunner.class)
-@TestMethodOrder(SunitRunner.class)
+@ExtendWith(SUnitRunner.class)
+@TestMethodOrder(SUnitRunner.class)
 class Junit4WithAssertionsTestCaseMaterializerTest {
 
 	private static TestCaseMaterializer materializer;

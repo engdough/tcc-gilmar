@@ -15,10 +15,10 @@ import src.br.ufsc.ine.leb.roza.Statement;
 import src.br.ufsc.ine.leb.roza.TestCase;
 import src.br.ufsc.ine.leb.roza.TestClass;
 import src.br.ufsc.ine.leb.roza.TestMethod;
-import sunit.runner.SunitRunner;
+import sunit.runner.SUnitRunner;
 
-@ExtendWith(SunitRunner.class)
-@TestMethodOrder(SunitRunner.class)
+@ExtendWith(SUnitRunner.class)
+@TestMethodOrder(SUnitRunner.class)
 class Junit4TestCaseExtractorTest {
 
 	private static TestCaseExtractor extractor;

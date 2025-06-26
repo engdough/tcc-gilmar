@@ -18,10 +18,10 @@ import src.br.ufsc.ine.leb.roza.TestMethod;
 import src.br.ufsc.ine.leb.roza.utils.CodeStringBuilder;
 import src.br.ufsc.ine.leb.roza.utils.FileUtils;
 import src.br.ufsc.ine.leb.roza.utils.FolderUtils;
-import sunit.runner.SunitRunner;
+import sunit.runner.SUnitRunner;
 
-@ExtendWith(SunitRunner.class)
-@TestMethodOrder(SunitRunner.class)
+@ExtendWith(SUnitRunner.class)
+@TestMethodOrder(SUnitRunner.class)
 public class JUnit4TestClassWriterTest {
 
 	private static FolderUtils folderUtils;

@@ -15,10 +15,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import src.br.ufsc.ine.leb.roza.Cluster;
 import src.br.ufsc.ine.leb.roza.TestCase;
 import src.br.ufsc.ine.leb.roza.exceptions.InvalidThresholdException;
-import sunit.runner.SunitRunner;
+import sunit.runner.SUnitRunner;
 
-@ExtendWith(SunitRunner.class)
-@TestMethodOrder(SunitRunner.class)
+@ExtendWith(SUnitRunner.class)
+@TestMethodOrder(SUnitRunner.class)
 class SimilarityBasedCriteriaTest {
 
 	private static BigDecimal dotOne;

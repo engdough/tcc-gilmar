@@ -24,10 +24,10 @@ import src.br.ufsc.ine.leb.roza.measurement.LccssSimilarityMeasurer;
 import src.br.ufsc.ine.leb.roza.measurement.SimilarityMeasurer;
 import src.br.ufsc.ine.leb.roza.utils.FolderUtils;
 import src.br.ufsc.ine.leb.roza.utils.comparator.SimilarityAssessmentComparatorByScoreSourceNameAndTargetName;
-import sunit.runner.SunitRunner;
+import sunit.runner.SUnitRunner;
 
-@ExtendWith(SunitRunner.class)
-@TestMethodOrder(SunitRunner.class)
+@ExtendWith(SUnitRunner.class)
+@TestMethodOrder(SUnitRunner.class)
 class LccssSimilarityMetricTest {
 
 	private static BigDecimal oneOfTwo;

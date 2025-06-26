@@ -16,10 +16,10 @@ import src.br.ufsc.ine.leb.roza.exceptions.InsufficientRefereeException;
 import src.br.ufsc.ine.leb.roza.exceptions.NoCombinationToChooseException;
 import src.br.ufsc.ine.leb.roza.exceptions.TiebreakException;
 import src.br.ufsc.ine.leb.roza.utils.CollectionUtils;
-import sunit.runner.SunitRunner;
+import sunit.runner.SUnitRunner;
 
-@ExtendWith(SunitRunner.class)
-@TestMethodOrder(SunitRunner.class)
+@ExtendWith(SUnitRunner.class)
+@TestMethodOrder(SUnitRunner.class)
 public class ComposedRefereeTest {
 
 	private static Combination gammaCombinedDelta;

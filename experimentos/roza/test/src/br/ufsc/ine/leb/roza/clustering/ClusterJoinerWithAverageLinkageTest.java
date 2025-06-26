@@ -18,10 +18,10 @@ import src.br.ufsc.ine.leb.roza.SimilarityReportBuilder;
 import src.br.ufsc.ine.leb.roza.TestCase;
 import src.br.ufsc.ine.leb.roza.exceptions.TiebreakException;
 import src.br.ufsc.ine.leb.roza.utils.CollectionUtils;
-import sunit.runner.SunitRunner;
+import sunit.runner.SUnitRunner;
 
-@ExtendWith(SunitRunner.class)
-@TestMethodOrder(SunitRunner.class)
+@ExtendWith(SUnitRunner.class)
+@TestMethodOrder(SUnitRunner.class)
 class ClusterJoinerWithAverageLinkageTest {
 
 	private static BigDecimal dotTwo;
